@@ -4,6 +4,7 @@
 #include <fftw3.h>
 #include "GUI.h"
 #include "LIQR_Receiver.h"
+#include "LIQR_Spectroscope.h"
 #include "util.h"
 
 int buffer_length = 1024;
@@ -22,6 +23,7 @@ int main()
 	rtlsdr_dev_t* device;
 	char device_name[32] = { 0 };
 	LIQR_Receiver *rec;
+	LIQR_Spectroscope<float>* spectroscope;
 
 	// init receiver
 
@@ -38,6 +40,8 @@ int main()
 	window->show();
 
 	//spectre_box->link_buffer((float*)rec->buffer, rec->buffer_length / 64);
+
+	spectroscope = new LIQR_Spectroscope<float>(rec);
 
 	return Fl::run();
 }

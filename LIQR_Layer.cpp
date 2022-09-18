@@ -13,10 +13,18 @@ LIQR_Layer<buf_t>::LIQR_Layer(int len)
 }
 
 template<typename buf_t>
-void LIQR_Layer<buf_t>::listen_to(LIQR_Layer* l)
+template<typename p_buf_t>
+LIQR_Layer<buf_t>::LIQR_Layer(LIQR_Layer<p_buf_t>* l)
 {
-	l->_add_listener(this);
-	parent = l;
+		l->_add_listener(this);
+}
+
+template<typename buf_t>
+template<typename p_buf_t>
+inline void LIQR_Layer<buf_t>::listen_to(LIQR_Layer<p_buf_t>* l)
+{
+		l->_add_listener(this);
+		parent = l;
 }
 
 template<typename buf_t>
@@ -53,3 +61,6 @@ void LIQR_Layer<buf_t>::_add_listener(LIQR_Layer* l)
 
 template class LIQR_Layer<cmplx_uint8_t>;
 template LIQR_Layer<cmplx_uint8_t>::LIQR_Layer(int len);
+
+template class LIQR_Layer<float>;
+template LIQR_Layer<float>::LIQR_Layer(LIQR_Layer<cmplx_uint8_t>* l);

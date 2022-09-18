@@ -7,7 +7,6 @@ template<typename buf_t>
 class LIQR_Layer
 {
 	LIQR_Layer* parent;
-	std::vector<LIQR_Layer*> children;
 
 protected:
 	buf_t* buffer;
@@ -16,6 +15,8 @@ protected:
 	uint32_t sample_rate; // serves mainly for informative purposes, except for receiving/playing cases
 
 	pthread_t thread;
+
+	std::vector<LIQR_Layer*> children;
 
 	/**
 		Adds the layer l to the list of descendants. Adds the l's update()
@@ -30,6 +31,8 @@ protected:
 public:
 	LIQR_Layer();
 	LIQR_Layer(int length);
+	template<typename p_buf_t>
+	LIQR_Layer(LIQR_Layer<p_buf_t>* l); 
 
 	/**
 		Adds this layer as a descendant of layer l. Gains access to
@@ -38,10 +41,11 @@ public:
 
 		/param l layer to descend from
 	*/
-	void listen_to(LIQR_Layer* l);
+	template<typename p_buf_t>
+	void listen_to(LIQR_Layer<p_buf_t>* l);
 
 	/**
-		Calls update() method of every descendant Layer
+		Calls update() method of every descendant layer
 	*/
 	void call_down();
 
@@ -55,3 +59,5 @@ public:
 
 	buf_t get_sample(uint32_t i);
 };
+
+

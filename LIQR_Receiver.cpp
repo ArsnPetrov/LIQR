@@ -70,6 +70,10 @@ void LIQR_Receiver::receive_buffer(cmplx_uint8_t* buf, uint32_t len)
 void LIQR_Receiver::update()
 {
 	if (rand() % 100 == 34) printf("ab: %d\n", get_sample(2).real);
+	for (uint32_t i = 0; i < children.size(); i++)
+	{
+			(children[i])->update();
+	}
 }
 
 cmplx_uint8_t LIQR_Receiver::get_sample(uint32_t i)
