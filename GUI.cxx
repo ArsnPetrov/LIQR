@@ -71,7 +71,7 @@ Fl_Double_Window* make_window() {
       center_freq_toggle->value(100000);
       center_freq_toggle->textsize(12);
       center_freq_toggle->callback((Fl_Callback*)cb_center_freq_toggle);
-      o->step(1);
+      o->step(100);
       o->lstep(1000);
     } // Fl_Counter* center_freq_toggle
     { Fl_Group* o = new Fl_Group(575, 350, 190, 200, "\320\224\320\225\320\234\320\236\320\224\320\243\320\233\320\257\320\242\320\
@@ -128,8 +128,8 @@ Fl_Double_Window* make_window() {
       } // Fl_Check_Button* o
       o->end();
     } // Fl_Group* o
-    { Fl_Tabs* o = new Fl_Tabs(210, 220, 355, 135);
-      { Fl_Group* o = new Fl_Group(210, 240, 355, 115, "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 \
+    { Fl_Tabs* o = new Fl_Tabs(210, 220, 360, 135);
+      { Fl_Group* o = new Fl_Group(210, 240, 360, 115, "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 \
 \320\277\321\200\320\270\321\221\320\274\320\260");
         o->labelsize(13);
         { tabs_center_freq_field = new Fl_Value_Output(385, 250, 170, 20, "\320\246\320\265\320\275\321\202\321\200\320\260\320\273\321\214\320\275\320\
@@ -155,7 +155,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Value_Input* tabs_sample_rate_field
         o->end();
       } // Fl_Group* o
-      { Fl_Group* o = new Fl_Group(210, 240, 355, 115, "\320\236\320\261 SDR");
+      { Fl_Group* o = new Fl_Group(210, 240, 360, 115, "\320\236\320\261 SDR");
         o->labelsize(12);
         o->hide();
         { sdr_device_name_field = new Fl_Output(365, 250, 190, 20, "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \321\203\
@@ -181,7 +181,7 @@ Fl_Double_Window* make_window() {
       } // Fl_Group* o
       o->end();
     } // Fl_Tabs* o
-    { Fl_Light_Button* o = new Fl_Light_Button(455, 155, 110, 20, "\320\227\320\220\320\237\320\230\320\241\320\254 (0 MB)");
+    { Fl_Light_Button* o = new Fl_Light_Button(455, 155, 115, 20, "\320\227\320\220\320\237\320\230\320\241\320\254 (0 MB)");
       o->selection_color((Fl_Color)89);
       o->labelsize(10);
     } // Fl_Light_Button* o
@@ -239,7 +239,7 @@ Fl_Double_Window* make_window() {
       o->selection_color((Fl_Color)2);
       o->labelsize(10);
     } // Fl_Light_Button* o
-    { center_freq_field = new Fl_Value_Input(450, 180, 115, 20);
+    { center_freq_field = new Fl_Value_Input(450, 180, 120, 20);
       center_freq_field->labeltype(FL_NO_LABEL);
       center_freq_field->labelsize(11);
       center_freq_field->value(1700.01);

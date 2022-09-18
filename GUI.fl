@@ -41,7 +41,7 @@ Function {make_window()} {open
       label {Центральная частота, кГц}
       callback {update_center_freq_kHz(o->value());}
       xywh {210 180 235 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
-      code0 {o->step(1);}
+      code0 {o->step(100);}
       code1 {o->lstep(1000);}
     }
     Fl_Group {} {
@@ -96,11 +96,11 @@ Function {make_window()} {open
       }
     }
     Fl_Tabs {} {open
-      xywh {210 220 355 135}
+      xywh {210 220 360 135}
     } {
       Fl_Group {} {
         label {Параметры приёма} open
-        xywh {210 240 355 115} labelsize 13
+        xywh {210 240 360 115} labelsize 13
       } {
         Fl_Value_Output tabs_center_freq_field {
           label {Центральная частота, кГц::}
@@ -117,7 +117,7 @@ Function {make_window()} {open
       }
       Fl_Group {} {
         label {Об SDR} open
-        xywh {210 240 355 115} labelsize 12 hide
+        xywh {210 240 360 115} labelsize 12 hide
       } {
         Fl_Output sdr_device_name_field {
           label {Название устройства:}
@@ -139,7 +139,7 @@ Function {make_window()} {open
     }
     Fl_Light_Button {} {
       label {ЗАПИСЬ (0 MB)}
-      xywh {455 155 110 20} selection_color 89 labelsize 10
+      xywh {455 155 115 20} selection_color 89 labelsize 10
     }
     Fl_Button {} {
       label {ПУСК}
@@ -183,7 +183,7 @@ Function {make_window()} {open
     }
     Fl_Value_Input center_freq_field {
       callback {update_center_freq_kHz(o->value());}
-      xywh {450 180 115 20} labeltype NO_LABEL labelsize 11 value 1700.01 textsize 12
+      xywh {450 180 120 20} labeltype NO_LABEL labelsize 11 value 1700.01 textsize 12
     }
     Fl_Group {} {
       label {ВХОД}
