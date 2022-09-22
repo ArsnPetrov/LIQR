@@ -19,7 +19,7 @@ public:
 	LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len);
 
 	/**
-		Default sample rate — 2048 kHzm, len — 16 * 1024
+		Default sample rate ï¿½ 2048 kHzm, len ï¿½ 16 * 1024
 	*/
 	LIQR_Receiver();
 
@@ -48,7 +48,7 @@ public:
 	*/
 	void receive_buffer(cmplx_uint8_t* buf, uint32_t len);
 
-	virtual void update();
+	void update();
 
 	cmplx_uint8_t get_sample(uint32_t i);
 };

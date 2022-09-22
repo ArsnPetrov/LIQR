@@ -5,3 +5,6 @@ LIQR.vcxproj.filters
 LIQR.vcxproj.user
 x64/
 .vs/
+.vscode/
+LIQR
+

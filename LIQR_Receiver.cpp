@@ -7,15 +7,9 @@ void rtlsdr_callback(uint8_t* buf, uint32_t len, void* ctx)
 	((LIQR_Receiver*)ctx)->update();
 }
 
-static void* ___update_function(void* arg)
-{
-	rtlsdr_read_async(((LIQR_Receiver*)arg)->d, rtlsdr_callback, arg, 0, ((LIQR_Receiver*)arg)->get_length());
-
-	return 0;
-}
-
 LIQR_Receiver::LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len)
 {
+	type = LAYER_RECEIVER;
 	int r;
 	length = len;
 	r = rtlsdr_open(&d, index);
@@ -30,6 +24,7 @@ LIQR_Receiver::LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len)
 
 LIQR_Receiver::LIQR_Receiver()
 {
+	type = LAYER_RECEIVER;
 	length = 16 * 1024;
 	rtlsdr_open(&d, 0);
 	rtlsdr_set_sample_rate(d, kHz(2048));
@@ -42,6 +37,7 @@ LIQR_Receiver::LIQR_Receiver()
 
 LIQR_Receiver::LIQR_Receiver(int len)
 {
+	type = LAYER_RECEIVER;
 	length = len;
 	rtlsdr_open(&d, 0);
 	rtlsdr_set_sample_rate(d, kHz(2048));
@@ -50,6 +46,13 @@ LIQR_Receiver::LIQR_Receiver(int len)
 	rtlsdr_reset_buffer(d);
 
 	buffer = new cmplx_uint8_t[length];
+}
+
+static void* ___update_function(void* arg)
+{
+	rtlsdr_read_async(((LIQR_Receiver*)arg)->d, rtlsdr_callback, arg, 0, ((LIQR_Receiver*)arg)->get_length());
+
+	return 0;
 }
 
 void LIQR_Receiver::listen()
@@ -69,11 +72,7 @@ void LIQR_Receiver::receive_buffer(cmplx_uint8_t* buf, uint32_t len)
 
 void LIQR_Receiver::update()
 {
-	if (rand() % 100 == 34) printf("ab: %d\n", get_sample(2).real);
-	for (uint32_t i = 0; i < children.size(); i++)
-	{
-			(children[i])->update();
-	}
+	call_down();
 }
 
 cmplx_uint8_t LIQR_Receiver::get_sample(uint32_t i)

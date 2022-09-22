@@ -3,6 +3,10 @@
 #include <pthread.h>
 #include "util.h"
 
+typedef enum {
+	LAYER_BASE, LAYER_RECEIVER, LAYER_SPECTROSCOPE
+} layer_type_id;
+
 template<typename buf_t>
 class LIQR_Layer
 {
@@ -14,9 +18,15 @@ protected:
 	uint32_t length; // length of the layer in samples of buf_t
 	uint32_t sample_rate; // serves mainly for informative purposes, except for receiving/playing cases
 
+	layer_type_id type;
+
 	pthread_t thread;
 
 	std::vector<LIQR_Layer*> children;
+
+public:
+	LIQR_Layer();
+	LIQR_Layer(int length);
 
 	/**
 		Adds the layer l to the list of descendants. Adds the l's update()
@@ -26,13 +36,7 @@ protected:
 
 		/param l layer to make a descendant
 	*/
-	void _add_listener(LIQR_Layer* l);
-
-public:
-	LIQR_Layer();
-	LIQR_Layer(int length);
-	template<typename p_buf_t>
-	LIQR_Layer(LIQR_Layer<p_buf_t>* l); 
+	void _add_listener(LIQR_Layer<buf_t>* l);
 
 	/**
 		Adds this layer as a descendant of layer l. Gains access to
@@ -41,8 +45,7 @@ public:
 
 		/param l layer to descend from
 	*/
-	template<typename p_buf_t>
-	void listen_to(LIQR_Layer<p_buf_t>* l);
+	void listen_to(LIQR_Layer<buf_t>* l);
 
 	/**
 		Calls update() method of every descendant layer
@@ -53,7 +56,7 @@ public:
 		Main signal processing function. For streamed inputs (SDR)
 		usually runs in a separate thread.
 	*/
-	virtual void update();
+	void update();
 
 	uint32_t get_length();
 
