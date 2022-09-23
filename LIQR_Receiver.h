@@ -1,12 +1,14 @@
 #pragma once
 #include "LIQR_Layer.h"
 #include "util.h"
+#include <fftw3.h>
 #include <rtl-sdr.h>
 
-class LIQR_Receiver : public LIQR_Layer<cmplx_uint8_t>
+class LIQR_Receiver : public LIQR_Layer
 {
 public:
 	rtlsdr_dev_t* d; // main device to listen from
+	cmplx_uint8_t *rtl_buffer;
 
 	/**
 		Receiver's constructor. Opens and RTL-SDR device with given index. Sets the sample
@@ -19,11 +21,11 @@ public:
 	LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len);
 
 	/**
-		Default sample rate � 2048 kHzm, len � 16 * 1024
+		Default sample rate is 2048 kHz, len is 16 * 1024
 	*/
-	LIQR_Receiver();
+	//LIQR_Receiver();
 
-	LIQR_Receiver(int len);
+	//LIQR_Receiver(int len);
 
 	/**
 		Creates a separate thread. Reads I/Q data asyncronoulsy from Receiver's device *d.
@@ -50,6 +52,6 @@ public:
 
 	void update();
 
-	cmplx_uint8_t get_sample(uint32_t i);
+	cmplx_float_t get_sample(uint32_t i);
 };
 

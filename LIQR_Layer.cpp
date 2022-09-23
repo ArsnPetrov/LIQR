@@ -2,28 +2,28 @@
 #include "LIQR_Receiver.h"
 #include "LIQR_Spectroscope.h"
 
-template<typename buf_t>
-LIQR_Layer<buf_t>::LIQR_Layer()
+LIQR_Layer::LIQR_Layer() :
+	thread(), type(LAYER_BASE), buffer(nullptr), parent(nullptr),
+	length(0), sample_rate(kHz(2048)), abs_value_buffer(nullptr)
 {
-	type = LAYER_BASE;
+	abs_value_buffer = new float[length];
 }
 
-template<typename buf_t>
-LIQR_Layer<buf_t>::LIQR_Layer(int len)
+LIQR_Layer::LIQR_Layer(int len) :
+	thread(), type(LAYER_BASE), parent(nullptr),
+	length(len), sample_rate(kHz(2048)), abs_value_buffer(nullptr)
 {
-	type = LAYER_BASE;
-	buffer = new buf_t[len];
+	buffer = new cmplx_float_t[len * 2];
+	abs_value_buffer = new float[length];
 }
 
-template<typename buf_t>
-void LIQR_Layer<buf_t>::listen_to(LIQR_Layer<buf_t>* l)
+void LIQR_Layer::listen_to(LIQR_Layer* l)
 {
 	l->_add_listener(this);
 	parent = l;
 }
 
-template<typename buf_t>
-void LIQR_Layer<buf_t>::call_down()
+void LIQR_Layer::call_down()
 {
 	for (uint32_t i = 0; i < children.size(); i++)
 	{
@@ -38,29 +38,45 @@ void LIQR_Layer<buf_t>::call_down()
 	}
 }
 
-template<typename buf_t>
-void LIQR_Layer<buf_t>::update()
+void LIQR_Layer::update()
 {
 	call_down();
 }
 
-template<typename buf_t>
-uint32_t LIQR_Layer<buf_t>::get_length()
+void LIQR_Layer::calculate_abs_buffer()
+{
+	for (uint32_t i = 0; i < length; i++)
+	{
+		abs_value_buffer[i] = buffer[i].real;
+	}
+}
+
+uint32_t LIQR_Layer::get_length()
 {
 	return length;
 }
 
-template<typename buf_t>
-buf_t LIQR_Layer<buf_t>::get_sample(uint32_t i)
+cmplx_float_t LIQR_Layer::get_sample(uint32_t i)
 {
 	return buffer[i];
 }
 
-template<typename buf_t>
-void LIQR_Layer<buf_t>::_add_listener(LIQR_Layer<buf_t>* l)
+fftwf_complex* LIQR_Layer::get_fftwf_buffer()
+{
+	return (fftwf_complex*)buffer;
+}
+
+cmplx_float_t* LIQR_Layer::get_cmplx_buffer()
+{
+	return buffer;
+}
+
+float* LIQR_Layer::get_abs_buffer()
+{
+	return abs_value_buffer;
+}
+
+void LIQR_Layer::_add_listener(LIQR_Layer* l)
 {
 	children.push_back(l);
 }
-
-template class LIQR_Layer<cmplx_uint8_t>;
-template class LIQR_Layer<float>;

@@ -1,11 +1,25 @@
 #pragma once
 #include "LIQR_Layer.h"
+#include <fftw3.h>
 
-template <typename buf_t>
-class LIQR_Spectroscope : public LIQR_Layer<buf_t>
+class LIQR_Spectroscope : public LIQR_Layer
 {
+	fftwf_plan plan;
+
+	fftwf_complex* fftwf_in;
+	fftwf_complex* fftwf_out;
+
+	cmplx_float_t* in;
+	cmplx_float_t* out;
+
+	float *levels;
+	float* levels_filtered;
+
 public:
-	LIQR_Spectroscope();
+	LIQR_Spectroscope(uint32_t len);
+
+	float* get_levels_buffer();
+	float* get_filtered_levels_buffer();
 
 	void update();	
 };

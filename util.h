@@ -9,3 +9,7 @@
 typedef struct {
 		uint8_t real, imag;
 } cmplx_uint8_t;
+
+typedef struct {
+	float real, imag;
+} cmplx_float_t;
