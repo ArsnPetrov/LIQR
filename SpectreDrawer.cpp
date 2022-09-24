@@ -29,6 +29,16 @@ void SpectreDrawer::link_buffer(float* buf, int len)
 	Fl::add_timeout(0.01, spectre_drawer_callback, this);
 }
 
+void SpectreDrawer::set_bandwidth(uint32_t freq)
+{
+	bandwidth = freq;
+}
+
+void SpectreDrawer::set_frequecny(uint32_t freq)
+{
+	frequency = freq;
+}
+
 void SpectreDrawer::draw()
 {
 	float max = FLT_MIN, min = FLT_MAX, range, step;
@@ -127,6 +137,26 @@ void SpectreDrawer::draw()
 			fl_vertex(_x, y0 + window_height - 4);
 			
 			
+			//printf("hello world [%d] = %f\n", i, buffer[i]);
+		}
+
+		fl_end_line();
+
+		fl_color(FL_WHITE);
+		fl_begin_line();
+		for (int i = 0; i < buffer_length; i++)
+		{
+			int _x = x0 + i * ((float)window_width / buffer_length);
+			int _y = y0 - buffer[(i + buffer_length / 2) % buffer_length];
+
+			if (_y < y0) _y = y0;
+			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
+			if (_x < x0 + 60) _x = x0 + 60;
+			if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
+
+			fl_vertex(_x, _y);
+
+
 			//printf("hello world [%d] = %f\n", i, buffer[i]);
 		}
 		fl_end_line();

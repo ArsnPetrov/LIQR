@@ -22,6 +22,7 @@ int main()
 	receiver->listen();
 
 	gui_device = receiver->d;
+	gui_spectre_drawer = spectre_box;
 
 	sdr_device_name_field->value(rtlsdr_get_device_name(0));
 

@@ -11,7 +11,7 @@ decl {\#include "GUI_event_handler.h"} {public global
 Function {make_window()} {open
 } {
   Fl_Window {} {
-    label LIQR open selected
+    label {LIQR - Layered I/Q Receiver} open selected
     xywh {709 240 974 566} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {

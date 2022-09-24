@@ -1,7 +1,12 @@
-﻿  main.cpp
+﻿  GUI.cxx
+C:\Users\Admin\source\repos\LIQR\GUI.cxx(19,34): warning C4244:  'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\LIQR\GUI.cxx(25,32): warning C4244:  'argument': conversion from 'double' to 'int', possible loss of data
+  GUI_event_handler.cpp
+  main.cpp
+C:\Users\Admin\source\repos\LIQR\GUI.cxx(41,34): warning C4244:  'argument': conversion from 'double' to 'int', possible loss of data
   Generating code
-  4 of 222 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
+  9 of 224 functions ( 4.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   LIQR.vcxproj -> C:\Users\Admin\source\repos\LIQR\Release\LIQR.exe

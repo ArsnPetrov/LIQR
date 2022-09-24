@@ -43,7 +43,7 @@ static void cb_center_freq_field(Fl_Value_Input* o, void*) {
 
 Fl_Double_Window* make_window() {
   Fl_Double_Window* w;
-  { Fl_Double_Window* o = new Fl_Double_Window(974, 566, "LIQR");
+  { Fl_Double_Window* o = new Fl_Double_Window(974, 566, "LIQR - Layered I/Q Receiver");
     w = o; if (w) {/* empty */}
     o->color(FL_DARK1);
     o->labelsize(12);

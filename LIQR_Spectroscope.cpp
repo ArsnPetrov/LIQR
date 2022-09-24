@@ -38,6 +38,6 @@ void LIQR_Spectroscope::update()
 	for (int i = 0; i < length; i++)
 	{
 		levels[i] = 20 * log10f((out[i].real * out[i].real + out[i].imag * out[i].imag) / ((float)length * length * 256 * 256));
-		levels_filtered[i] = 0.99 * levels_filtered[i] + 0.01 * levels[i];
+		levels_filtered[i] = 0.93 * levels_filtered[i] + 0.07 * levels[i];
 	}
 }

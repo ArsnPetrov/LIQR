@@ -16,8 +16,8 @@ class SpectreDrawer : public Fl_Box {
 public:
 	SpectreDrawer(int x, int y, int w, int h, const char* l);
 	void link_buffer(float *buffer, int len);
-	void set_bandwidth();
-	void set_frequecny();
+	void set_bandwidth(uint32_t freq);
+	void set_frequecny(uint32_t freq);
 	void draw();
 	void _redraw();
 };
