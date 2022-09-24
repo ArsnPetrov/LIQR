@@ -158,6 +158,11 @@ Fl_Double_Window* make_window() {
           tabs_sample_rate_field->maximum(2000);
           tabs_sample_rate_field->textsize(12);
         } // Fl_Value_Input* tabs_sample_rate_field
+        { Fl_Input* o = new Fl_Input(385, 326, 170, 19, "\320\244\320\260\320\271\320\273 \320\264\320\273\321\217 \320\267\320\260\
+\320\277\320\270\321\201\320\270:");
+          o->labelsize(12);
+          o->textsize(12);
+        } // Fl_Input* o
         o->end();
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(210, 240, 360, 115, "\320\236\320\261 SDR");

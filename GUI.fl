@@ -11,7 +11,7 @@ decl {\#include "GUI_event_handler.h"} {public global
 Function {make_window()} {open
 } {
   Fl_Window {} {
-    label LIQR open
+    label LIQR open selected
     xywh {709 240 974 566} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
@@ -111,12 +111,16 @@ Function {make_window()} {open
         }
         Fl_Value_Input {} {
           label {Полоса пропускания, кГц:}
-          callback {update_bandwidth_kHz(o->value())} selected
+          callback {update_bandwidth_kHz(o->value())}
           xywh {385 301 170 19} labelsize 12 maximum 2000 value 2000 textsize 12
         }
         Fl_Value_Input tabs_sample_rate_field {
           label {Частота дискретизации, кГц:}
           xywh {385 276 170 20} labelsize 12 maximum 2000 textsize 12
+        }
+        Fl_Input {} {
+          label {Файл для записи:}
+          xywh {385 326 170 19} labelsize 12 textsize 12
         }
       }
       Fl_Group {} {

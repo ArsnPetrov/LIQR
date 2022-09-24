@@ -19,6 +19,7 @@ extern Fl_Counter *center_freq_toggle;
 extern Fl_Value_Output *tabs_center_freq_field;
 #include <FL/Fl_Value_Input.H>
 extern Fl_Value_Input *tabs_sample_rate_field;
+#include <FL/Fl_Input.H>
 #include <FL/Fl_Output.H>
 extern Fl_Output *sdr_device_name_field;
 extern Fl_Output *tuner_name_field;

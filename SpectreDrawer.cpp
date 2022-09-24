@@ -39,7 +39,7 @@ void SpectreDrawer::draw()
 	fl_color(92, 92, 104);
 	fl_draw_box(FL_DOWN_BOX, x0, y0, window_width, window_height, fl_color());
 
-	fl_push_clip(x0, y0, window_width, window_height);
+	fl_push_clip(x0 + 2, y0 + 2, window_width, window_height - 4);
 
 	if (buffer)
 	{
@@ -83,6 +83,22 @@ void SpectreDrawer::draw()
 			fl_draw(freq_str.c_str(), x0 + offset + i * pixels_per_100kHz - 25, y0 + 5, 50, 10, FL_ALIGN_CENTER, NULL, 1);
 		}
 
+		// dB
+
+		int _y = y0;
+		for (int i = 2; i < 12; i += 2)
+		{
+			fl_color(74, 74, 85);
+			fl_begin_line();
+			fl_vertex(x0 + 3, _y + 10 * i);
+			fl_vertex(x0 + window_width - 3, _y + 10 * i);
+			fl_end_line();
+
+			fl_color(148, 148, 160);
+			std::string dbstr = "-" + std::to_string(i * 10) + " dBFS";
+			fl_draw(dbstr.c_str(), x0 + 3, _y + 10 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
+		}
+
 		// spectre
 
 		for (int i = 0; i < buffer_length; i++)
@@ -100,11 +116,11 @@ void SpectreDrawer::draw()
 		for (int i = 0; i < buffer_length; i++)
 		{
 			int _x = x0 + i * ((float)window_width / buffer_length);
-			int _y = y0 + 300 + window_height / 2 - buffer[(i + buffer_length / 2) % buffer_length] * 4;
+			int _y = y0 - buffer[(i + buffer_length / 2) % buffer_length];
 
 			if (_y < y0) _y = y0;
 			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
-			if (_x < x0 + 3) _x = x0 + 3;
+			if (_x < x0 + 60) _x = x0 + 60;
 			if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
 
 			fl_vertex(_x, _y);
