@@ -1,0 +1,9 @@
+﻿  LIQR_Spectroscope.cpp
+C:\Users\Admin\source\repos\LIQR\LIQR_Spectroscope.cpp(38,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\LIQR\LIQR_Spectroscope.cpp(41,50): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  2 of 203 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  LIQR.vcxproj -> C:\Users\Admin\source\repos\LIQR\Release\LIQR.exe

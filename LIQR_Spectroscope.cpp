@@ -13,6 +13,9 @@ LIQR_Spectroscope::LIQR_Spectroscope(uint32_t len)
 	levels = new float[len];
 	levels_filtered = new float[len];
 
+	memset(levels, 0, len * sizeof(float));
+	memset(levels_filtered, 0, len * sizeof(float));
+
 	in = (cmplx_float_t*)fftwf_in;
 	out = (cmplx_float_t*)fftwf_out;
 }

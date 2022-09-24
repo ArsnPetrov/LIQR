@@ -3,15 +3,21 @@
 #include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
 #include <pthread.h>
+#include <stdint.h>
+#include "util.h"
 
 class SpectreDrawer : public Fl_Box {
 	int buffer_length;
 	float *buffer;
+	uint32_t bandwidth;
+	uint32_t frequency;
 	pthread_t thread;
 
 public:
 	SpectreDrawer(int x, int y, int w, int h, const char* l);
 	void link_buffer(float *buffer, int len);
+	void set_bandwidth();
+	void set_frequecny();
 	void draw();
 	void _redraw();
 };

@@ -1,5 +1,6 @@
 #include "SpectreDrawer.h"
 #include <cfloat>
+#include <string>
 #ifdef WIN32
 #include <windows.h>
 #else
@@ -16,6 +17,8 @@ SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) : Fl_Box
 {
 	buffer_length = 0;
 	buffer = NULL;
+	bandwidth = MHz(2);
+	frequency = MHz(100);
 }
 
 void SpectreDrawer::link_buffer(float* buf, int len)
@@ -36,8 +39,52 @@ void SpectreDrawer::draw()
 	fl_color(92, 92, 104);
 	fl_draw_box(FL_DOWN_BOX, x0, y0, window_width, window_height, fl_color());
 
+	fl_push_clip(x0, y0, window_width, window_height);
+
 	if (buffer)
 	{
+		// frequencies
+
+		uint32_t number_of_lines = bandwidth / kHz(100);
+
+		double pixels_per_100kHz = (double)window_width / number_of_lines;
+		double offset = (bandwidth % kHz(100)) * pixels_per_100kHz / 100;
+
+		for (uint32_t i = 0; i < number_of_lines; i++)
+		{
+			if (i == number_of_lines / 2)
+			{
+				fl_color(FL_BLACK);
+			}
+			else
+			{
+				fl_color(74, 74, 85);
+			}
+			fl_begin_line();
+			fl_vertex(x0 + offset + i * pixels_per_100kHz, y0 + 17);
+			fl_vertex(x0 + offset + i * pixels_per_100kHz, y0 - 3 + window_height);
+			//printf("x = %d y = %d \n", offset + i * pixels_per_100kHz, y0);
+			fl_end_line();
+
+			
+			if (i == number_of_lines / 2)
+			{
+				fl_color(FL_WHITE);
+			}
+			else
+			{
+				fl_color(148, 148, 160);
+			}
+			fl_font(0, 10);
+
+			std::string freq_str = std::to_string((frequency - bandwidth / 2 + bandwidth % kHz(100) + i * kHz(100)) / 1000000);
+			freq_str += '.';
+			freq_str += std::to_string((frequency - bandwidth / 2 + bandwidth % kHz(100) + i * kHz(100)) / 100000 % 10);
+			fl_draw(freq_str.c_str(), x0 + offset + i * pixels_per_100kHz - 25, y0 + 5, 50, 10, FL_ALIGN_CENTER, NULL, 1);
+		}
+
+		// spectre
+
 		for (int i = 0; i < buffer_length; i++)
 		{
 			if (buffer[i] > max) max = buffer[i];
@@ -56,17 +103,18 @@ void SpectreDrawer::draw()
 			int _y = y0 + 300 + window_height / 2 - buffer[(i + buffer_length / 2) % buffer_length] * 4;
 
 			if (_y < y0) _y = y0;
-			if (_y > y0 + window_height) _y = y0 + window_height - 2;
-			if (_x < x0) _x = x0;
-			if (_x > _x + window_width) _x = x0 + window_width - 2;
+			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
+			if (_x < x0 + 3) _x = x0 + 3;
+			if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
 
 			fl_vertex(_x, _y);
-			fl_vertex(_x, y0 + window_height);
+			fl_vertex(_x, y0 + window_height - 4);
 			
 			
 			//printf("hello world [%d] = %f\n", i, buffer[i]);
 		}
 		fl_end_line();
-		
 	}
+
+	fl_pop_clip();
 }
