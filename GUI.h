@@ -4,6 +4,7 @@
 #define GUI_h
 #include <FL/Fl.H>
 #include "SpectreDrawer.h"
+#include "GUI_event_handler.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Menu_Bar.H>
 extern SpectreDrawer *spectre_box;

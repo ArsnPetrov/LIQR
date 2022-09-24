@@ -21,6 +21,8 @@ int main()
 	LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
 	receiver->listen();
 
+	gui_device = receiver->d;
+
 	sdr_device_name_field->value(rtlsdr_get_device_name(0));
 
 	LIQR_Spectroscope* spectroscope = new LIQR_Spectroscope(buffer_length);

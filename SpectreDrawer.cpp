@@ -53,7 +53,7 @@ void SpectreDrawer::draw()
 		for (int i = 0; i < buffer_length; i++)
 		{
 			int _x = x0 + i * ((float)window_width / buffer_length);
-			int _y = y0 + window_height * 2 - buffer[(i + buffer_length / 2) % buffer_length] * 2;
+			int _y = y0 + 300 + window_height / 2 - buffer[(i + buffer_length / 2) % buffer_length] * 4;
 
 			if (_y < y0) _y = y0;
 			if (_y > y0 + window_height) _y = y0 + window_height - 2;

@@ -5,11 +5,13 @@ code_name {.cxx}
 decl {\#include "SpectreDrawer.h"} {public global
 }
 
-Function {make_window()} {open
-} {
+decl {\#include "GUI_event_handler.h"} {public global
+}
+
+Function {make_window()} {} {
   Fl_Window {} {
-    label LIQR open selected
-    xywh {704 235 974 566} type Double color 47 labelsize 12 resizable visible
+    label LIQR open
+    xywh {709 240 974 566} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
       label hfgdhf
@@ -227,4 +229,6 @@ Function {update_center_freq_kHz(int freq)} {open return_type void
   code {center_freq_field->value(freq);
 center_freq_toggle->value(freq);
 tabs_center_freq_field->value(freq);} {}
+  code {gui_set_device_frequency(freq * 1000);} {selected
+  }
 }

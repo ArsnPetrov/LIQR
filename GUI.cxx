@@ -299,4 +299,5 @@ void update_center_freq_kHz(int freq) {
   center_freq_field->value(freq);
   center_freq_toggle->value(freq);
   tabs_center_freq_field->value(freq);
+  gui_set_device_frequency(freq * 1000);
 }
