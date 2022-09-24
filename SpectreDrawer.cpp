@@ -6,18 +6,10 @@
 #include <unistd.h>
 #endif
 
-void* spectre_drawer_callback(void *arg)
+void spectre_drawer_callback(void *arg)
 {
-	while (true)
-	{
-		((SpectreDrawer*)arg)->redraw();
-#ifdef WIN32
-		//Sleep(5);
-#else
-		//usleep(5000);
-#endif
-	}
-	return 0;
+	((SpectreDrawer*)arg)->redraw();
+	Fl::repeat_timeout(0.01, spectre_drawer_callback, arg);
 }
 
 SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) : Fl_Box(x, y, w, h, l), thread()
@@ -31,7 +23,7 @@ void SpectreDrawer::link_buffer(float* buf, int len)
 	buffer_length = len;
 	buffer = buf;
 
-	pthread_create(&thread, 0, spectre_drawer_callback, this);
+	Fl::add_timeout(0.1, spectre_drawer_callback, this);
 }
 
 void SpectreDrawer::draw()
@@ -41,7 +33,8 @@ void SpectreDrawer::draw()
 
 	//printf("Buffer size is %d\n", buffer_length);
 
-	fl_draw_box(FL_BORDER_BOX, x0, y0, window_width, window_height, FL_GRAY);
+	fl_color(92, 92, 104);
+	fl_draw_box(FL_DOWN_BOX, x0, y0, window_width, window_height, fl_color());
 
 	if (buffer)
 	{
@@ -55,7 +48,7 @@ void SpectreDrawer::draw()
 		range = max - min;
 		step = range / window_height;
 
-		fl_color(FL_BLUE);
+		fl_color(148, 148, 160);
 		fl_begin_line();
 		for (int i = 0; i < buffer_length; i++)
 		{
@@ -63,9 +56,9 @@ void SpectreDrawer::draw()
 			int _y = y0 + window_height * 2 - buffer[(i + buffer_length / 2) % buffer_length] * 2;
 
 			if (_y < y0) _y = y0;
-			if (_y > y0 + window_height) _y = y0 + window_height - 1;
+			if (_y > y0 + window_height) _y = y0 + window_height - 2;
 			if (_x < x0) _x = x0;
-			if (_x > _x + window_width) _x = x0 + window_width - 1;
+			if (_x > _x + window_width) _x = x0 + window_width - 2;
 
 			fl_vertex(_x, _y);
 			fl_vertex(_x, y0 + window_height);

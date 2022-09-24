@@ -41,7 +41,7 @@ Fl_Double_Window* make_window() {
   Fl_Double_Window* w;
   { Fl_Double_Window* o = new Fl_Double_Window(974, 566, "LIQR");
     w = o; if (w) {/* empty */}
-    o->color(FL_DARK2);
+    o->color(FL_DARK1);
     o->labelsize(12);
     { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 975, 20, "hfgdhf");
       o->menu(menu_hfgdhf);
@@ -61,7 +61,7 @@ Fl_Double_Window* make_window() {
     { Fl_Tree* o = new Fl_Tree(10, 30, 190, 520);
       o->color((Fl_Color)53);
     } // Fl_Tree* o
-    { Fl_Counter* o = center_freq_toggle = new Fl_Counter(210, 180, 235, 20, "\320\246\320\265\320\275\321\202\321\200\320\260\320\273\321\214\320\275\320\
+    { Fl_Counter* o = center_freq_toggle = new Fl_Counter(210, 180, 180, 20, "\320\246\320\265\320\275\321\202\321\200\320\260\320\273\321\214\320\275\320\
 \260\321\217 \321\207\320\260\321\201\321\202\320\276\321\202\320\260, \320\
 \272\320\223\321\206");
       center_freq_toggle->labelsize(12);
@@ -239,7 +239,7 @@ Fl_Double_Window* make_window() {
       o->selection_color((Fl_Color)2);
       o->labelsize(10);
     } // Fl_Light_Button* o
-    { center_freq_field = new Fl_Value_Input(450, 180, 120, 20);
+    { center_freq_field = new Fl_Value_Input(395, 180, 120, 20);
       center_freq_field->labeltype(FL_NO_LABEL);
       center_freq_field->labelsize(11);
       center_freq_field->value(1700.01);

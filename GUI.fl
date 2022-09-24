@@ -9,7 +9,7 @@ Function {make_window()} {open
 } {
   Fl_Window {} {
     label LIQR open selected
-    xywh {359 349 974 566} type Double color 45 labelsize 12 resizable visible
+    xywh {704 235 974 566} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
       label hfgdhf
@@ -40,7 +40,7 @@ Function {make_window()} {open
     Fl_Counter center_freq_toggle {
       label {Центральная частота, кГц}
       callback {update_center_freq_kHz(o->value());}
-      xywh {210 180 235 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
+      xywh {210 180 180 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
       code0 {o->step(100);}
       code1 {o->lstep(1000);}
     }
@@ -183,7 +183,7 @@ Function {make_window()} {open
     }
     Fl_Value_Input center_freq_field {
       callback {update_center_freq_kHz(o->value());}
-      xywh {450 180 120 20} labeltype NO_LABEL labelsize 11 value 1700.01 textsize 12
+      xywh {395 180 120 20} labeltype NO_LABEL labelsize 11 value 1700.01 textsize 12
     }
     Fl_Group {} {
       label {ВХОД}
