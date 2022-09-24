@@ -21,6 +21,10 @@ static void cb_center_freq_toggle(Fl_Counter* o, void*) {
 
 Fl_Value_Output *tabs_center_freq_field=(Fl_Value_Output *)0;
 
+static void cb_(Fl_Value_Input* o, void*) {
+  update_bandwidth_kHz(o->value());
+}
+
 Fl_Value_Input *tabs_sample_rate_field=(Fl_Value_Input *)0;
 
 Fl_Output *sdr_device_name_field=(Fl_Output *)0;
@@ -145,6 +149,7 @@ Fl_Double_Window* make_window() {
           o->maximum(2000);
           o->value(2000);
           o->textsize(12);
+          o->callback((Fl_Callback*)cb_);
         } // Fl_Value_Input* o
         { tabs_sample_rate_field = new Fl_Value_Input(385, 276, 170, 20, "\320\247\320\260\321\201\321\202\320\276\321\202\320\260 \320\264\320\270\
 \321\201\320\272\321\200\320\265\321\202\320\270\320\267\320\260\321\206\320\
@@ -181,7 +186,7 @@ Fl_Double_Window* make_window() {
       } // Fl_Group* o
       o->end();
     } // Fl_Tabs* o
-    { Fl_Light_Button* o = new Fl_Light_Button(455, 155, 115, 20, "\320\227\320\220\320\237\320\230\320\241\320\254 (0 MB)");
+    { Fl_Light_Button* o = new Fl_Light_Button(455, 155, 115, 20, "\320\227\320\220\320\237\320\230\320\241\320\254 I/Q (0 MB)");
       o->selection_color((Fl_Color)89);
       o->labelsize(10);
     } // Fl_Light_Button* o
@@ -242,7 +247,7 @@ Fl_Double_Window* make_window() {
     { center_freq_field = new Fl_Value_Input(395, 180, 120, 20);
       center_freq_field->labeltype(FL_NO_LABEL);
       center_freq_field->labelsize(11);
-      center_freq_field->value(1700.01);
+      center_freq_field->value(100000);
       center_freq_field->textsize(12);
       center_freq_field->callback((Fl_Callback*)cb_center_freq_field);
     } // Fl_Value_Input* center_freq_field
@@ -300,4 +305,8 @@ void update_center_freq_kHz(int freq) {
   center_freq_toggle->value(freq);
   tabs_center_freq_field->value(freq);
   gui_set_device_frequency(freq * 1000);
+}
+
+void update_bandwidth_kHz(int freq) {
+  gui_set_bandwidth(freq * 1000);
 }

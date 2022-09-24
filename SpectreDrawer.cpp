@@ -23,7 +23,7 @@ void SpectreDrawer::link_buffer(float* buf, int len)
 	buffer_length = len;
 	buffer = buf;
 
-	Fl::add_timeout(0.1, spectre_drawer_callback, this);
+	Fl::add_timeout(0.01, spectre_drawer_callback, this);
 }
 
 void SpectreDrawer::draw()

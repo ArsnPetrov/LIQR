@@ -8,7 +8,8 @@ decl {\#include "SpectreDrawer.h"} {public global
 decl {\#include "GUI_event_handler.h"} {public global
 }
 
-Function {make_window()} {} {
+Function {make_window()} {open
+} {
   Fl_Window {} {
     label LIQR open
     xywh {709 240 974 566} type Double color 47 labelsize 12 resizable visible
@@ -110,6 +111,7 @@ Function {make_window()} {} {
         }
         Fl_Value_Input {} {
           label {Полоса пропускания, кГц:}
+          callback {update_bandwidth_kHz(o->value())} selected
           xywh {385 301 170 19} labelsize 12 maximum 2000 value 2000 textsize 12
         }
         Fl_Value_Input tabs_sample_rate_field {
@@ -140,7 +142,7 @@ Function {make_window()} {} {
       }
     }
     Fl_Light_Button {} {
-      label {ЗАПИСЬ (0 MB)}
+      label {ЗАПИСЬ I/Q (0 MB)}
       xywh {455 155 115 20} selection_color 89 labelsize 10
     }
     Fl_Button {} {
@@ -185,7 +187,7 @@ Function {make_window()} {} {
     }
     Fl_Value_Input center_freq_field {
       callback {update_center_freq_kHz(o->value());}
-      xywh {395 180 120 20} labeltype NO_LABEL labelsize 11 value 1700.01 textsize 12
+      xywh {395 180 120 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
     }
     Fl_Group {} {
       label {ВХОД}
@@ -224,11 +226,15 @@ Function {make_window()} {} {
   }
 }
 
-Function {update_center_freq_kHz(int freq)} {open return_type void
+Function {update_center_freq_kHz(int freq)} {return_type void
 } {
   code {center_freq_field->value(freq);
 center_freq_toggle->value(freq);
 tabs_center_freq_field->value(freq);} {}
-  code {gui_set_device_frequency(freq * 1000);} {selected
-  }
+  code {gui_set_device_frequency(freq * 1000);} {}
+}
+
+Function {update_bandwidth_kHz(int freq)} {open
+} {
+  code {gui_set_bandwidth(freq * 1000);} {}
 }

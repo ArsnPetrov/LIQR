@@ -30,4 +30,5 @@ extern Fl_Value_Input *center_freq_field;
 Fl_Double_Window* make_window();
 extern Fl_Menu_Item menu_hfgdhf[];
 void update_center_freq_kHz(int freq);
+void update_bandwidth_kHz(int freq);
 #endif

@@ -11,3 +11,12 @@ void gui_set_device_frequency(uint32_t freq)
 		rtlsdr_set_center_freq(gui_device, freq);
 	}
 }
+
+void gui_set_bandwidth(uint32_t freq)
+{
+	if (gui_device != nullptr)
+	{
+		//rtlsdr_reset_buffer(gui_device);
+		rtlsdr_set_tuner_bandwidth(gui_device, freq);
+	}
+}
