@@ -51,6 +51,8 @@ void SpectreDrawer::draw()
 
 	fl_push_clip(x0 + 2, y0 + 2, window_width, window_height - 4);
 
+	float downsample_factor = (float)buffer_length / window_width;
+
 	if (buffer)
 	{
 		// frequencies
@@ -95,18 +97,18 @@ void SpectreDrawer::draw()
 
 		// dB
 
-		int _y = y0;
-		for (int i = 2; i < 12; i += 2)
+		int _y = y0 - 30;
+		for (int i = 4; i < 13; i += 2)
 		{
 			fl_color(74, 74, 85);
 			fl_begin_line();
-			fl_vertex(x0 + 3, _y + 10 * i);
-			fl_vertex(x0 + window_width - 3, _y + 10 * i);
+			fl_vertex(x0 + 3, _y + 15 * i);
+			fl_vertex(x0 + window_width - 3, _y + 15 * i);
 			fl_end_line();
 
 			fl_color(148, 148, 160);
 			std::string dbstr = "-" + std::to_string(i * 10) + " dBFS";
-			fl_draw(dbstr.c_str(), x0 + 3, _y + 10 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
+			fl_draw(dbstr.c_str(), x0 + 3, _y + 15 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
 		}
 
 		// spectre
@@ -121,33 +123,33 @@ void SpectreDrawer::draw()
 		range = max - min;
 		step = range / window_height;
 
-		fl_color(148, 148, 160);
-		fl_begin_line();
-		for (int i = 0; i < buffer_length; i++)
-		{
-			int _x = x0 + i * ((float)window_width / buffer_length);
-			int _y = y0 - buffer[(i + buffer_length / 2) % buffer_length];
+		//fl_color(148, 148, 160);
+		//fl_begin_line();
+		//for (int i = 0; i < window_width; i++)
+		//{
+		//	int _x = x0 + i;
+		//	int _y = y0 - 30 - 1.5 * buffer[(int)(i * downsample_factor + buffer_length / 2) % buffer_length];
 
-			if (_y < y0) _y = y0;
-			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
-			if (_x < x0 + 60) _x = x0 + 60;
-			if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
+		//	if (_y < y0) _y = y0;
+		//	if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
+		//	if (_x < x0 + 60) _x = x0 + 60;
+		//	if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
 
-			fl_vertex(_x, _y);
-			fl_vertex(_x, y0 + window_height - 4);
-			
-			
-			//printf("hello world [%d] = %f\n", i, buffer[i]);
-		}
+		//	fl_vertex(_x, _y);
+		//	fl_vertex(_x, y0 + window_height - 4);
+		//	
+		//	
+		//	//printf("hello world [%d] = %f\n", i, buffer[i]);
+		//}
 
-		fl_end_line();
+		//fl_end_line();
 
 		fl_color(FL_WHITE);
 		fl_begin_line();
-		for (int i = 0; i < buffer_length; i++)
+		for (int i = 0; i < window_width; i++)
 		{
-			int _x = x0 + i * ((float)window_width / buffer_length);
-			int _y = y0 - buffer[(i + buffer_length / 2) % buffer_length];
+			int _x = x0 + i;
+			int _y = y0 - 30 - 1.5 * buffer[(int)(i * downsample_factor + buffer_length / 2) % buffer_length];
 
 			if (_y < y0) _y = y0;
 			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;

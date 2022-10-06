@@ -11,7 +11,7 @@ decl {\#include "GUI_event_handler.h"} {public global
 Function {make_window()} {open
 } {
   Fl_Window {} {
-    label {LIQR - Layered I/Q Receiver} open selected
+    label {LIQR - Layered I/Q Receiver} open
     xywh {709 240 974 566} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
@@ -33,7 +33,7 @@ Function {make_window()} {open
       }
     }
     Fl_Box spectre_box {
-      label spectrogram
+      label spectrogram selected
       xywh {210 30 750 115} box BORDER_BOX color 24 labelcolor 54 resizable
       class SpectreDrawer
     }
