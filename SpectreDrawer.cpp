@@ -46,7 +46,7 @@ void SpectreDrawer::draw()
 
 	//printf("Buffer size is %d\n", buffer_length);
 
-	fl_color(92, 92, 104);
+	fl_color(FL_BLACK);
 	fl_draw_box(FL_DOWN_BOX, x0, y0, window_width, window_height, fl_color());
 
 	fl_push_clip(x0 + 2, y0 + 2, window_width, window_height - 4);
@@ -66,7 +66,7 @@ void SpectreDrawer::draw()
 		{
 			if (i == number_of_lines / 2)
 			{
-				fl_color(FL_BLACK);
+				fl_color(FL_WHITE);
 			}
 			else
 			{
@@ -144,7 +144,7 @@ void SpectreDrawer::draw()
 
 		//fl_end_line();
 
-		fl_color(FL_WHITE);
+		fl_color(FL_GREEN);
 		fl_begin_line();
 		for (int i = 0; i < window_width; i++)
 		{

@@ -7,7 +7,6 @@
 #include "GUI_event_handler.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Menu_Bar.H>
-extern SpectreDrawer *spectre_box;
 #include <FL/Fl_Tree.H>
 #include <FL/Fl_Counter.H>
 extern Fl_Counter *center_freq_toggle;
@@ -28,6 +27,7 @@ extern Fl_Value_Output *tuner_gain_field;
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Button.H>
 extern Fl_Value_Input *center_freq_field;
+extern SpectreDrawer *spectre_box;
 Fl_Double_Window* make_window();
 extern Fl_Menu_Item menu_hfgdhf[];
 void update_center_freq_kHz(int freq);
