@@ -1,5 +1,6 @@
 #pragma once
 #include "LIQR_Layer.h"
+#include "LIQR_Hopping_Receiver.h"
 #include <fftw3.h>
 
 class LIQR_Spectroscope : public LIQR_Layer
@@ -20,6 +21,8 @@ public:
 
 	float* get_levels_buffer();
 	float* get_filtered_levels_buffer();
+
+	void listen_to(LIQR_Layer* l);
 
 	void update();	
 };

@@ -23,9 +23,7 @@ public:
 	/**
 		Default sample rate is 2048 kHz, len is 16 * 1024
 	*/
-	//LIQR_Receiver();
-
-	//LIQR_Receiver(int len);
+	LIQR_Receiver();
 
 	/**
 		Creates a separate thread. Reads I/Q data asyncronoulsy from Receiver's device *d.

@@ -4,6 +4,7 @@
 #include <fftw3.h>
 #include "GUI.h"
 #include "LIQR_Receiver.h"
+#include "LIQR_Hopping_Receiver.h"
 #include "LIQR_Spectroscope.h"
 #include "util.h"
 
@@ -17,8 +18,12 @@ int main()
 	window->show();
 
 	buffer_length = 2048;
+	int hops_number = 39;
+	//int hops_number = 1;
 
-	LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
+	//LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
+	LIQR_Hopping_Receiver* receiver = new LIQR_Hopping_Receiver(0, kHz(1024), buffer_length, MHz(498), hops_number);
+	
 	receiver->listen();
 
 	gui_device = receiver->d;
@@ -29,8 +34,10 @@ int main()
 	LIQR_Spectroscope* spectroscope = new LIQR_Spectroscope(buffer_length);
 	spectroscope->listen_to(receiver);
 
-	spectre_box->link_buffer(spectroscope->get_filtered_levels_buffer(), buffer_length);
-	
+	spectre_box->link_buffer(spectroscope->get_filtered_levels_buffer(), buffer_length * ((hops_number + 1) / 2));
+	//spectre_box->no_fftshift = true;
+	spectre_box->set_bandwidth(MHz(1 + hops_number));
+	spectre_box->set_frequecny(receiver->base_frequency);
 	spectre_box->damage(FL_DAMAGE_ALL);
 
 	return Fl::run();

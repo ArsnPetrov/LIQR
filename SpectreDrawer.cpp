@@ -13,7 +13,8 @@ void spectre_drawer_callback(void *arg)
 	Fl::repeat_timeout(0.01, spectre_drawer_callback, arg);
 }
 
-SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) : Fl_Box(x, y, w, h, l), thread()
+SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) : 
+	Fl_Box(x, y, w, h, l), no_fftshift(false), thread()
 {
 	buffer_length = 0;
 	buffer = NULL;
@@ -57,10 +58,12 @@ void SpectreDrawer::draw()
 	{
 		// frequencies
 
-		uint32_t number_of_lines = bandwidth / kHz(100);
+		uint32_t number_of_lines = 20;
+
+		uint32_t freq_step = bandwidth / number_of_lines;
 
 		double pixels_per_100kHz = (double)window_width / number_of_lines;
-		double offset = (bandwidth % kHz(100)) * pixels_per_100kHz / 100;
+		double offset = (bandwidth % freq_step) * pixels_per_100kHz / 100;
 
 		for (uint32_t i = 0; i < number_of_lines; i++)
 		{
@@ -89,26 +92,28 @@ void SpectreDrawer::draw()
 			}
 			fl_font(0, 10);
 
-			std::string freq_str = std::to_string((frequency - bandwidth / 2 + bandwidth % kHz(100) + i * kHz(100)) / 1000000);
+			std::string freq_str = std::to_string((frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 1000000);
 			freq_str += '.';
-			freq_str += std::to_string((frequency - bandwidth / 2 + bandwidth % kHz(100) + i * kHz(100)) / 100000 % 10);
+			freq_str += std::to_string((frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 100000 % 10);
 			fl_draw(freq_str.c_str(), x0 + offset + i * pixels_per_100kHz - 25, y0 + 5, 50, 10, FL_ALIGN_CENTER, NULL, 1);
 		}
 
 		// dB
 
-		int _y = y0 - 30;
-		for (int i = 4; i < 13; i += 2)
+		float scale = 3;
+
+		int _y = y0;
+		for (int i = 1; i < 13; i += 1)
 		{
 			fl_color(74, 74, 85);
 			fl_begin_line();
-			fl_vertex(x0 + 3, _y + 15 * i);
-			fl_vertex(x0 + window_width - 3, _y + 15 * i);
+			fl_vertex(x0 + 3, _y + scale * 10 * i);
+			fl_vertex(x0 + window_width - 3, _y + scale * 10 * i);
 			fl_end_line();
 
 			fl_color(148, 148, 160);
 			std::string dbstr = "-" + std::to_string(i * 10) + " dBFS";
-			fl_draw(dbstr.c_str(), x0 + 3, _y + 15 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
+			fl_draw(dbstr.c_str(), x0 + 3, _y + scale * 10 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
 		}
 
 		// spectre
@@ -149,11 +154,16 @@ void SpectreDrawer::draw()
 		for (int i = 0; i < window_width; i++)
 		{
 			int _x = x0 + i;
-			int _y = y0 - 30 - 1.5 * buffer[(int)(i * downsample_factor + buffer_length / 2) % buffer_length];
+			int index = no_fftshift ? (int)(i * downsample_factor + buffer_length / 2) % buffer_length : (i * downsample_factor);
+			int _y = y0 - scale * buffer[index];
+			/*for (int j = 0; j < (int)downsample_factor; j++)
+			{
+				_y -= scale * buffer[index + j] / (int)downsample_factor;
+			}*/
 
 			if (_y < y0) _y = y0;
 			if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
-			if (_x < x0 + 60) _x = x0 + 60;
+			if (_x < x0 + 4) _x = x0 + 4;
 			if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
 
 			fl_vertex(_x, _y);

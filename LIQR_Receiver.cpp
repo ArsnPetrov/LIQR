@@ -21,6 +21,26 @@ LIQR_Receiver::LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len)
 	}
 	rtlsdr_set_sample_rate(d, sample_rate);
 	rtlsdr_set_tuner_gain_mode(d, 0);
+	rtlsdr_set_center_freq(d, MHz(100.1));
+	//rtlsdr_set_testmode(d, 1);
+	rtlsdr_reset_buffer(d);
+
+	rtl_buffer = new cmplx_uint8_t[length];
+	buffer = new cmplx_float_t[length];
+	abs_value_buffer = new float[length];
+}
+
+LIQR_Receiver::LIQR_Receiver()
+{
+	type = LAYER_RECEIVER;
+	length = 2048;
+	d = nullptr;
+
+	int r;
+	r = rtlsdr_open(&d, 0);
+	printf("rtlsdropen %d. address is %#010x\n", r, d);
+	rtlsdr_set_sample_rate(d, sample_rate);
+	rtlsdr_set_tuner_gain_mode(d, 0);
 	rtlsdr_set_center_freq(d, MHz(100));
 	//rtlsdr_set_testmode(d, 1);
 	rtlsdr_reset_buffer(d);

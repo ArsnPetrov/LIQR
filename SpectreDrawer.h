@@ -14,6 +14,8 @@ class SpectreDrawer : public Fl_Box {
 	pthread_t thread;
 
 public:
+	bool no_fftshift;
+
 	SpectreDrawer(int x, int y, int w, int h, const char* l);
 	void link_buffer(float *buffer, int len);
 	void set_bandwidth(uint32_t freq);

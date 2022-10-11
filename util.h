@@ -13,3 +13,18 @@ typedef struct {
 typedef struct {
 	float real, imag;
 } cmplx_float_t;
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
+inline void LIQR_sleep(int sleepMs)
+{
+#ifdef _WIN32
+	Sleep(sleepMs);
+#else
+	usleep(sleepMs * 1000);
+#endif
+}
