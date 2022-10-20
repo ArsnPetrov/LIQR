@@ -22,6 +22,12 @@ SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) :
 	frequency = MHz(100);
 }
 
+void SpectreDrawer::change_buffer(float* buf, int len)
+{
+	buffer_length = len;
+	buffer = buf;
+}
+
 void SpectreDrawer::link_buffer(float* buf, int len)
 {
 	buffer_length = len;
@@ -58,12 +64,13 @@ void SpectreDrawer::draw()
 	{
 		// frequencies
 
-		uint32_t number_of_lines = 20;
+		uint32_t number_of_lines = 12;
 
-		uint32_t freq_step = bandwidth / number_of_lines;
+		uint32_t freq_step = bandwidth / (number_of_lines);
 
-		double pixels_per_100kHz = (double)window_width / number_of_lines;
-		double offset = (bandwidth % freq_step) * pixels_per_100kHz / 100;
+
+		double pixels_per_step = (double)window_width / number_of_lines;
+		double offset = (bandwidth % freq_step) * pixels_per_step / 100;
 
 		for (uint32_t i = 0; i < number_of_lines; i++)
 		{
@@ -76,8 +83,8 @@ void SpectreDrawer::draw()
 				fl_color(74, 74, 85);
 			}
 			fl_begin_line();
-			fl_vertex(x0 + offset + i * pixels_per_100kHz, y0 + 17);
-			fl_vertex(x0 + offset + i * pixels_per_100kHz, y0 - 3 + window_height);
+			fl_vertex(x0 + offset + i * pixels_per_step, y0 + 17);
+			fl_vertex(x0 + offset + i * pixels_per_step, y0 - 3 + window_height);
 			//printf("x = %d y = %d \n", offset + i * pixels_per_100kHz, y0);
 			fl_end_line();
 
@@ -92,10 +99,12 @@ void SpectreDrawer::draw()
 			}
 			fl_font(0, 10);
 
-			std::string freq_str = std::to_string((frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 1000000);
+			uint32_t MHz_freq = (frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 1000000;
+
+			std::string freq_str = std::to_string(MHz_freq);
 			freq_str += '.';
-			freq_str += std::to_string((frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 100000 % 10);
-			fl_draw(freq_str.c_str(), x0 + offset + i * pixels_per_100kHz - 25, y0 + 5, 50, 10, FL_ALIGN_CENTER, NULL, 1);
+			freq_str += std::to_string((frequency - bandwidth / 2 + bandwidth % freq_step + i * freq_step) / 10000 % 100);
+			fl_draw(freq_str.c_str(), x0 + offset + i * pixels_per_step - 25, y0 + 5, 50, 10, FL_ALIGN_CENTER, NULL, 1);
 		}
 
 		// dB

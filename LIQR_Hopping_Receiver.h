@@ -22,5 +22,13 @@ public:
 		/param hops number of frequency hops. Resulting bandwidth will be 2 MHz * hops
 	*/
 	LIQR_Hopping_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len, uint32_t base_freq, int hops);
-};
 
+	/**
+		Resets Hopping Receiver's base frequency
+
+		/param freq new center frequency
+	*/
+	void set_center_freq(uint32_t freq);
+
+	void set_hops_number(int n);
+};

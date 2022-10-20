@@ -1,0 +1,219 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0308
+header_name {.h}
+code_name {.cxx}
+decl {\#include "SpectreDrawer.h"} {public global
+}
+
+decl {\#include "GUI_event_handler.h"} {public global
+}
+
+Function {make_window()} {open
+} {
+  Fl_Window {} {
+    label {LIQR - Layered I/Q Receiver} open selected
+    xywh {373 186 899 443} type Double color 47 labelsize 12 resizable visible
+  } {
+    Fl_Menu_Bar {} {
+      label hfgdhf
+      xywh {0 0 970 20}
+    } {
+      Submenu {} {
+        label {Файл} open
+        xywh {0 0 62 20} labelsize 12
+      } {
+        MenuItem {} {
+          label {Открыть I/Q файл (Ctrl-O)}
+          xywh {0 0 30 20} labelsize 12
+        }
+        MenuItem {} {
+          label {Записать I/Q (Ctrl-R)}
+          xywh {0 0 30 20} labelsize 12
+        }
+      }
+    }
+    Fl_Tree {} {
+      xywh {10 30 190 390} color 53
+    }
+    Fl_Counter center_freq_toggle {
+      label {Центральная частота, кГц}
+      callback {update_center_freq_kHz(o->value());}
+      xywh {210 245 180 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
+      code0 {o->step(100);}
+      code1 {o->lstep(1000);}
+    }
+    Fl_Group {} {
+      label {ДЕМОДУЛЯТОР}
+      xywh {700 315 190 120} box THIN_UP_BOX labelsize 10 align 17
+    } {
+      Fl_Group {} {
+        label {АНАЛОГОВАЯ ДЕМОДУЛЯЦИЯ}
+        xywh {710 370 170 55} box ENGRAVED_BOX labelsize 9 align 5
+      } {
+        Fl_Round_Button {} {
+          label AM
+          xywh {720 380 45 15} down_box ROUND_DOWN_BOX
+        }
+        Fl_Round_Button {} {
+          label WFM
+          xywh {720 400 45 15} down_box ROUND_DOWN_BOX value 1
+        }
+        Fl_Round_Button {} {
+          label LSB
+          xywh {780 380 64 15} down_box ROUND_DOWN_BOX
+        }
+        Fl_Round_Button {} {
+          label USB
+          xywh {780 400 64 15} down_box ROUND_DOWN_BOX
+        }
+      }
+      Fl_Check_Button {} {
+        label {Автоподбор параметров}
+        xywh {710 335 170 15} down_box DOWN_BOX labelsize 11
+      }
+    }
+    Fl_Tabs {} {open
+      xywh {210 285 290 135}
+    } {
+      Fl_Group {} {
+        label {Параметры приёма} open
+        xywh {210 305 280 115} labelsize 13
+      } {
+        Fl_Value_Output tabs_center_freq_field {
+          label {Центральная частота, кГц::}
+          xywh {395 315 95 20} labelsize 12 textsize 12
+        }
+        Fl_Value_Input {} {
+          label {Полоса пропускания, кГц:}
+          callback {update_bandwidth_kHz(o->value())}
+          xywh {395 366 95 19} labelsize 12 maximum 2000 value 2000 textsize 12
+        }
+        Fl_Value_Input tabs_sample_rate_field {
+          label {Частота дискретизации, кГц:}
+          xywh {395 341 95 20} labelsize 12 maximum 2000 textsize 12
+        }
+        Fl_Input {} {
+          label {Файл для записи:}
+          xywh {395 391 95 19} labelsize 12 textsize 12
+        }
+      }
+      Fl_Group {} {
+        label {Об SDR} open
+        xywh {210 305 280 115} labelsize 12 hide
+      } {
+        Fl_Output sdr_device_name_field {
+          label {Название устройства:}
+          xywh {375 315 115 20} labelsize 12 textsize 12
+        }
+        Fl_Output tuner_name_field {
+          label {Тип тюнера:}
+          xywh {375 340 115 20} labelsize 12 textsize 12
+        }
+        Fl_Value_Output xtal_freq_field {
+          label {Частота резонатора:}
+          xywh {375 365 115 20} labelsize 12 textsize 12
+        }
+        Fl_Value_Output tuner_gain_field {
+          label {Усиление тюнера, дБ:}
+          xywh {375 390 115 20} labelsize 12 textsize 12
+        }
+      }
+    }
+    Fl_Light_Button {} {
+      label {ЗАПИСЬ I/Q (0 MB)}
+      xywh {385 220 115 20} selection_color 89 labelsize 10
+    }
+    Fl_Button {} {
+      label {ПУСК}
+      tooltip start xywh {265 220 60 20} labelsize 10
+    }
+    Fl_Button {} {
+      label {СТОП}
+      xywh {325 220 60 20} labelsize 10
+    }
+    Fl_Group {} {
+      label {ПОЛОСОВОЙ ФИЛЬТР}
+      xywh {700 220 190 90} box THIN_UP_BOX labelsize 10 align 17
+    } {
+      Fl_Value_Input {} {
+        label {Ширина полосы, кГц:}
+        xywh {820 240 60 20} labelsize 11 value 80 textsize 12
+      }
+      Fl_Value_Input {} {
+        label {Крутизна спада:}
+        xywh {820 260 60 20} labelsize 11 value 0.5 textsize 12
+      }
+      Fl_Value_Input {} {
+        label {Децимация:}
+        xywh {820 280 60 20} labelsize 11 value 2 textsize 12
+      }
+      Fl_Check_Button {} {
+        xywh {865 220 15 15} down_box DOWN_BOX value 1 labelsize 13
+      }
+    }
+    Fl_Light_Button {} {
+      label {АУДИО}
+      xywh {210 220 55 20} selection_color 2 labelsize 10
+    }
+    Fl_Value_Input center_freq_field {
+      callback {update_center_freq_kHz(o->value());}
+      xywh {395 245 105 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
+    }
+    Fl_Group {} {
+      label {ВХОД} open
+      xywh {505 220 190 95} box THIN_UP_BOX labelsize 9 align 17
+    } {
+      Fl_Value_Output {} {
+        label {Част. дискр., кГц:}
+        xywh {605 241 80 20} labelsize 11 value 2400 textsize 12
+      }
+      Fl_Value_Output {} {
+        label {Размер кадра:}
+        xywh {605 262 80 20} labelsize 11 value 2048 textsize 12
+      }
+      Fl_Output {} {
+        label {Источник:}
+        xywh {605 284 80 20} labelsize 11 textsize 11
+      }
+    }
+    Fl_Group {} {
+      label {ВЫХОД}
+      xywh {505 320 190 100} box THIN_UP_BOX labelsize 9 align 17
+    } {
+      Fl_Value_Output {} {
+        label {Част. дискр., кГц:}
+        xywh {605 341 80 20} labelsize 11 value 1200 textsize 12
+      }
+      Fl_Value_Output {} {
+        label {Размер кадра:}
+        xywh {605 362 80 20} labelsize 11 value 1024 textsize 12
+      }
+      Fl_Output {} {
+        label {Источник:}
+        xywh {605 384 80 20} labelsize 11 textsize 11
+      }
+    }
+    Fl_Tabs {} {open
+      xywh {210 30 680 185} resizable
+    } {
+      Fl_Box spectre_box {
+        label {СПЕКТР}
+        xywh {210 50 680 165} box BORDER_BOX color 24 labelsize 10 labelcolor 54 resizable
+        class SpectreDrawer
+      }
+    }
+  }
+}
+
+Function {update_center_freq_kHz(int freq)} {return_type void
+} {
+  code {center_freq_field->value(freq);
+center_freq_toggle->value(freq);
+tabs_center_freq_field->value(freq);} {}
+  code {gui_set_device_frequency(freq * 1000);} {}
+}
+
+Function {update_bandwidth_kHz(int freq)} {open
+} {
+  code {gui_set_bandwidth(freq * 1000);} {}
+}

@@ -18,6 +18,7 @@ public:
 
 	SpectreDrawer(int x, int y, int w, int h, const char* l);
 	void link_buffer(float *buffer, int len);
+	void change_buffer(float* buf, int len);
 	void set_bandwidth(uint32_t freq);
 	void set_frequecny(uint32_t freq);
 	void draw();

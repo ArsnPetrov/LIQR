@@ -31,7 +31,8 @@ void LIQR_Layer::call_down()
 		{
 		case LAYER_BASE: children[i]->update(); break;
 		case LAYER_RECEIVER: ((LIQR_Receiver*)children[i])->update(); break;
-		case LAYER_SPECTROSCOPE: ((LIQR_Spectroscope*)children[i])->update(); break;
+		case LAYER_HOPPING_RECEIVER: ((LIQR_Hopping_Receiver*)children[i])->update(); break;
+ 		case LAYER_SPECTROSCOPE: ((LIQR_Spectroscope*)children[i])->update(); break;
 		default: printf("Error: Layer not enumerated\n"); break;
 		}
 		
