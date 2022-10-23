@@ -12,7 +12,7 @@ Function {make_window()} {open
 } {
   Fl_Window {} {
     label {LIQR - Layered I/Q Receiver} open selected
-    xywh {178 166 705 574} type Double color 47 labelsize 12 resizable visible
+    xywh {1061 193 705 574} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
       label hfgdhf open
@@ -36,19 +36,12 @@ Function {make_window()} {open
         xywh {0 0 30 20} labelsize 12
       }
     }
-    Fl_Counter center_freq_toggle {
-      label {Центральная частота, кГц}
-      callback {update_center_freq_kHz(o->value());}
-      xywh {10 370 170 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
-      code0 {o->step(100);}
-      code1 {o->lstep(1000);}
-    }
     Fl_Tabs {} {open
       xywh {10 410 490 155}
     } {
       Fl_Group {} {
         label {Параметры приёма} open
-        xywh {15 430 485 105} labelsize 13 hide
+        xywh {15 430 485 105} labelsize 13
       } {
         Fl_Value_Output tabs_center_freq_field {
           label {Центральная частота, кГц::}
@@ -92,7 +85,7 @@ Function {make_window()} {open
       }
       Fl_Group {} {
         label {Сканирующий приём} open
-        xywh {10 430 490 130} labelsize 13
+        xywh {10 430 490 130} labelsize 13 hide
       } {
         Fl_Value_Input freq_hop_step_field {
           label {Шаг перестройки, кГц:}
@@ -125,34 +118,48 @@ hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->
         }
       }
     }
-    Fl_Light_Button {} {
-      label {ЗАПИСЬ I/Q (0 MB)}
-      xywh {185 345 115 20} selection_color 89 labelsize 10 deactivate
-    }
-    Fl_Button {} {
-      label {ПУСК}
-      tooltip start xywh {65 345 60 20} labelsize 10 deactivate
-    }
-    Fl_Button {} {
-      label {СТОП}
-      xywh {125 345 60 20} labelsize 10 deactivate
-    }
-    Fl_Light_Button {} {
-      label {АУДИО}
-      xywh {10 345 55 20} selection_color 2 labelsize 10 deactivate
-    }
-    Fl_Value_Input center_freq_field {
-      callback {update_center_freq_kHz(o->value());}
-      xywh {185 370 105 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
-    }
     Fl_Tabs {} {open
-      xywh {10 30 685 310} resizable
+      xywh {10 30 685 310}
     } {
       Fl_Box spectre_box {
         label {СПЕКТР}
         xywh {10 50 685 290} box BORDER_BOX color 24 labelsize 10 labelcolor 54 resizable hotspot
         class SpectreDrawer
       }
+    }
+    Fl_Group {} {open
+      xywh {10 345 685 65} resizable
+    } {
+      Fl_Light_Button {} {
+        label {ЗАПИСЬ I/Q (0 MB)}
+        xywh {185 350 110 20} selection_color 89 labelsize 10 deactivate
+      }
+      Fl_Button {} {
+        label {ПУСК}
+        tooltip start xywh {65 350 60 20} labelsize 10 deactivate
+      }
+      Fl_Button {} {
+        label {СТОП}
+        xywh {125 350 60 20} labelsize 10 deactivate
+      }
+      Fl_Light_Button {} {
+        label {АУДИО}
+        xywh {10 350 55 20} selection_color 2 labelsize 10 deactivate
+      }
+      Fl_Value_Input center_freq_field {
+        callback {update_center_freq_kHz(o->value());}
+        xywh {185 375 110 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
+      }
+      Fl_Counter center_freq_toggle {
+        label {Центральная частота, кГц}
+        callback {update_center_freq_kHz(o->value());}
+        xywh {10 375 170 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
+        code0 {o->step(100);}
+        code1 {o->lstep(1000);}
+      }
+      Fl_Group {} {open
+        xywh {300 350 395 45} resizable
+      } {}
     }
   }
 }

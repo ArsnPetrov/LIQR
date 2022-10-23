@@ -7,8 +7,6 @@
 #include "GUI_event_handler.h"
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Menu_Bar.H>
-#include <FL/Fl_Counter.H>
-extern Fl_Counter *center_freq_toggle;
 #include <FL/Fl_Tabs.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Value_Output.H>
@@ -25,10 +23,12 @@ extern Fl_Value_Input *freq_hop_step_field;
 extern Fl_Value_Input *hop_steps_field;
 extern Fl_Value_Input *hop_bandwidth_field;
 extern Fl_Value_Input *hop_period_field;
+extern SpectreDrawer *spectre_box;
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Button.H>
 extern Fl_Value_Input *center_freq_field;
-extern SpectreDrawer *spectre_box;
+#include <FL/Fl_Counter.H>
+extern Fl_Counter *center_freq_toggle;
 Fl_Double_Window* make_window();
 extern Fl_Menu_Item menu_hfgdhf[];
 void update_center_freq_kHz(int freq);

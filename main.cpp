@@ -18,7 +18,7 @@ int main()
 	window->show();
 
 	buffer_length = 1024 * 8;
-	int hops_number = 9;
+	int hops_number = 90;
 	//int hops_number = 1;
 
 	//LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
@@ -37,6 +37,7 @@ int main()
 	gui_current_spectroscope = spectroscope;
 
 	spectre_box->link_buffer(spectroscope->get_filtered_levels_buffer(), buffer_length * (hops_number + 1) / 2);
+	spectre_box->link_maxline(spectroscope->get_max_line_levels_buffer());
 	//spectre_box->no_fftshift = true;
 	spectre_box->set_bandwidth(MHz(1 + hops_number));
 	spectre_box->set_frequecny(MHz(100));

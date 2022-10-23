@@ -12,9 +12,11 @@ LIQR_Spectroscope::LIQR_Spectroscope(uint32_t len)
 
 	levels = new float[len];
 	levels_filtered = new float[len];
+	levels_max_line = new float[len];
 
-	memset(levels, 0, len * sizeof(float));
-	memset(levels_filtered, 0, len * sizeof(float));
+	memset(levels, -150, len * sizeof(float));
+	memset(levels_filtered, -150, len * sizeof(float));
+	memset(levels_max_line, -FLT_MAX, len * sizeof(float));
 
 	in = (cmplx_float_t*)fftwf_in;
 	out = (cmplx_float_t*)fftwf_out;
@@ -25,6 +27,11 @@ float* LIQR_Spectroscope::get_filtered_levels_buffer()
 	return levels_filtered;
 }
 
+float* LIQR_Spectroscope::get_max_line_levels_buffer()
+{
+	return levels_max_line;
+}
+
 void LIQR_Spectroscope::listen_to(LIQR_Layer* l)
 {
 	LIQR_Layer::listen_to(l);
@@ -32,14 +39,20 @@ void LIQR_Spectroscope::listen_to(LIQR_Layer* l)
 	{
 		free(levels);
 		free(levels_filtered);
+		free(levels_max_line);
 
 		int hops = ((LIQR_Hopping_Receiver*)l)->hops_number;
 
 		levels = new float[length * hops];
 		levels_filtered = new float[length * hops];
+		levels_max_line = new float[length * hops];
 
-		memset(levels, 1, length * hops * sizeof(float));
-		memset(levels_filtered, 1, length * hops * sizeof(float));
+		for (int i = 0; i < length * hops; i++)
+		{
+			levels[i] = -150;
+			levels_filtered[i] = -150;
+			levels_max_line[i] = -150;
+		}
 	}
 }
 
@@ -75,6 +88,8 @@ void LIQR_Spectroscope::update()
 		int _j = (length / 2 + i) % length;
 		levels[bias + i] = 0.9 * levels[bias + i] + 1 * log10f((out[_j].real * out[_j].real + out[_j].imag * out[_j].imag) / ((float)length * length / (hops * hops) * 256 * 256));
 		levels_filtered[bias + i] = 0.95 * levels_filtered[bias + i] + 0.05 * levels[bias + i];
+		//levels_filtered[bias + i] = -100;
+		if (levels_filtered[bias + i] != 0 && levels_filtered[bias + i] > levels_max_line[bias + i]) levels_max_line[bias + i] = levels_filtered[bias + i];
 
 		if (isinf(levels_filtered[bias + i]))
 		{
@@ -87,10 +102,13 @@ void LIQR_Spectroscope::change_levels_buffer_length(int l)
 {
 	free(levels);
 	free(levels_filtered);
+	free(levels_max_line);
 
 	levels = new float[l];
 	levels_filtered = new float[l];
+	levels_max_line = new float[l];
 
-	memset(levels, 1, l * sizeof(float));
-	memset(levels_filtered, 1, l * sizeof(float));
+	memset(levels, -150, l * sizeof(float));
+	memset(levels_filtered, -150, l * sizeof(float));
+	memset(levels_max_line, -150, l * sizeof(float));
 }

@@ -18,6 +18,7 @@ SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) :
 {
 	buffer_length = 0;
 	buffer = NULL;
+	maxline_buffer = NULL;
 	bandwidth = MHz(2);
 	frequency = MHz(100);
 }
@@ -34,6 +35,14 @@ void SpectreDrawer::link_buffer(float* buf, int len)
 	buffer = buf;
 
 	Fl::add_timeout(0.01, spectre_drawer_callback, this);
+}
+
+void SpectreDrawer::link_maxline(float* buffer)
+{
+	if (buffer_length != 0)
+	{
+		maxline_buffer = buffer;
+	}
 }
 
 void SpectreDrawer::set_bandwidth(uint32_t freq)
@@ -125,6 +134,40 @@ void SpectreDrawer::draw()
 			fl_draw(dbstr.c_str(), x0 + 3, _y + scale * 10 * i - 5, 50, 9, FL_ALIGN_CENTER, NULL, 1);
 		}
 
+		// maxline
+
+		if (maxline_buffer != NULL)
+		{
+			fl_color(FL_BLUE);
+			fl_begin_line();
+			for (int i = 0; i < window_width; i++)
+			{
+				int _x = x0 + i;
+				int index = no_fftshift ? (int)(i * downsample_factor + buffer_length / 2) % buffer_length : (i * downsample_factor);
+				float value = 0;
+				for (int j = 0; j < downsample_factor; j++)
+				{
+					value += maxline_buffer[index + j] / downsample_factor;
+				}
+				int _y = y0 - scale * value;
+				/*for (int j = 0; j < (int)downsample_factor; j++)
+				{
+					_y -= scale * buffer[index + j] / (int)downsample_factor;
+				}*/
+
+				if (_y < y0) _y = y0;
+				if (_y > y0 + window_height - 4) _y = y0 + window_height - 4;
+				if (_x < x0 + 4) _x = x0 + 4;
+				if (_x > x0 + window_width - 4) _x = x0 + window_width - 4;
+
+				fl_vertex(_x, _y);
+
+
+				//printf("hello world [%d] = %f\n", i, maxline_buffer[i]);
+			}
+			fl_end_line();
+		}
+
 		// spectre
 
 		for (int i = 0; i < buffer_length; i++)
@@ -164,7 +207,12 @@ void SpectreDrawer::draw()
 		{
 			int _x = x0 + i;
 			int index = no_fftshift ? (int)(i * downsample_factor + buffer_length / 2) % buffer_length : (i * downsample_factor);
-			int _y = y0 - scale * buffer[index];
+			float value = 0;
+			for (int j = 0; j < downsample_factor; j++)
+			{
+				value += buffer[index + j] / downsample_factor;
+			}
+			int _y = y0 - scale * value;
 			/*for (int j = 0; j < (int)downsample_factor; j++)
 			{
 				_y -= scale * buffer[index + j] / (int)downsample_factor;
@@ -181,6 +229,8 @@ void SpectreDrawer::draw()
 			//printf("hello world [%d] = %f\n", i, buffer[i]);
 		}
 		fl_end_line();
+
+		
 	}
 
 	fl_pop_clip();
