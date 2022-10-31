@@ -16,3 +16,6 @@ extern void gui_set_device_frequency(uint32_t freq);
 extern void gui_set_bandwidth(uint32_t freq);
 extern void gui_set_autogain(int v);
 extern void gui_set_hops_number(int n);
+extern void gui_start_spectre();
+extern void gui_stop_spectre();
+extern void gui_set_hopping_period(int t);

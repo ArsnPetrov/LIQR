@@ -5,7 +5,7 @@ void* hopping_thread_fn(void* arg)
 	LIQR_Hopping_Receiver* rec = (LIQR_Hopping_Receiver*)arg;
 	while (1)
 	{
-		//LIQR_sleep(100);
+		if (rec->hopping_period != 0) LIQR_sleep(rec->hopping_period);
 		//rtlsdr_reset_buffer(rec->d);
 		rec->current_hop++;
 		rec->current_hop %= rec->hops_number;
@@ -51,5 +51,6 @@ void LIQR_Hopping_Receiver::set_center_freq(uint32_t freq)
 void LIQR_Hopping_Receiver::set_hops_number(int n)
 {
 	hops_number = n;
+	current_hop = 0;
 }
 

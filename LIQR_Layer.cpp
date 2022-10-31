@@ -7,6 +7,7 @@ LIQR_Layer::LIQR_Layer() :
 	length(0), sample_rate(kHz(2048)), abs_value_buffer(nullptr)
 {
 	abs_value_buffer = new float[length];
+	active = true;
 }
 
 LIQR_Layer::LIQR_Layer(int len) :
@@ -27,15 +28,17 @@ void LIQR_Layer::call_down()
 {
 	for (uint32_t i = 0; i < children.size(); i++)
 	{
-		switch (children[i]->type)
+		if (children[i]->is_active())
 		{
-		case LAYER_BASE: children[i]->update(); break;
-		case LAYER_RECEIVER: ((LIQR_Receiver*)children[i])->update(); break;
-		case LAYER_HOPPING_RECEIVER: ((LIQR_Hopping_Receiver*)children[i])->update(); break;
- 		case LAYER_SPECTROSCOPE: ((LIQR_Spectroscope*)children[i])->update(); break;
-		default: printf("Error: Layer not enumerated\n"); break;
-		}
-		
+			switch (children[i]->type)
+			{
+			case LAYER_BASE: children[i]->update(); break;
+			case LAYER_RECEIVER: ((LIQR_Receiver*)children[i])->update(); break;
+			case LAYER_HOPPING_RECEIVER: ((LIQR_Hopping_Receiver*)children[i])->update(); break;
+			case LAYER_SPECTROSCOPE: ((LIQR_Spectroscope*)children[i])->update(); break;
+			default: printf("Error: Layer not enumerated\n"); break;
+			}
+		}		
 	}
 }
 
@@ -75,6 +78,21 @@ cmplx_float_t* LIQR_Layer::get_cmplx_buffer()
 float* LIQR_Layer::get_abs_buffer()
 {
 	return abs_value_buffer;
+}
+
+int LIQR_Layer::is_active()
+{
+	return active;
+}
+
+void LIQR_Layer::deactivate()
+{
+	active = false;
+}
+
+void LIQR_Layer::activate()
+{
+	active = true;
 }
 
 void LIQR_Layer::_add_listener(LIQR_Layer* l)

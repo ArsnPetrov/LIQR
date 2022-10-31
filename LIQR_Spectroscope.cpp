@@ -6,6 +6,8 @@ LIQR_Spectroscope::LIQR_Spectroscope(uint32_t len)
 	length = len;
 	type = LAYER_SPECTROSCOPE;
 
+	active = true;
+
 	fftwf_in = fftwf_alloc_complex(length);
 	fftwf_out = fftwf_alloc_complex(length);
 	plan = fftwf_plan_dft_1d(length, fftwf_in, fftwf_out, FFTW_FORWARD, FFTW_ESTIMATE);
@@ -14,9 +16,12 @@ LIQR_Spectroscope::LIQR_Spectroscope(uint32_t len)
 	levels_filtered = new float[len];
 	levels_max_line = new float[len];
 
-	memset(levels, -150, len * sizeof(float));
-	memset(levels_filtered, -150, len * sizeof(float));
-	memset(levels_max_line, -FLT_MAX, len * sizeof(float));
+	for (int i = 0; i < length; i++)
+	{
+		levels[i] = -150;
+		levels_filtered[i] = -150;
+		levels_max_line[i] = -150;
+	}
 
 	in = (cmplx_float_t*)fftwf_in;
 	out = (cmplx_float_t*)fftwf_out;
@@ -63,6 +68,8 @@ float* LIQR_Spectroscope::get_levels_buffer()
 
 void LIQR_Spectroscope::update()
 {
+	if (!active) return;
+
 	memcpy(fftwf_in, parent->get_cmplx_buffer(), length * sizeof(cmplx_float_t));
 	fftwf_execute(plan);
 
@@ -87,7 +94,7 @@ void LIQR_Spectroscope::update()
 		//printf("%f\n", levels_filtered[bias + (length / 2 + i) % length]);
 		int _j = (length / 2 + i) % length;
 		levels[bias + i] = 0.9 * levels[bias + i] + 1 * log10f((out[_j].real * out[_j].real + out[_j].imag * out[_j].imag) / ((float)length * length / (hops * hops) * 256 * 256));
-		levels_filtered[bias + i] = 0.95 * levels_filtered[bias + i] + 0.05 * levels[bias + i];
+		levels_filtered[bias + i] = 0.98 * levels_filtered[bias + i] + 0.02 * levels[bias + i];
 		//levels_filtered[bias + i] = -100;
 		if (levels_filtered[bias + i] != 0 && levels_filtered[bias + i] > levels_max_line[bias + i]) levels_max_line[bias + i] = levels_filtered[bias + i];
 

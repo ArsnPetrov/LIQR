@@ -17,7 +17,7 @@ int main()
 	window = make_window();
 	window->show();
 
-	buffer_length = 1024 * 8;
+	buffer_length = 1024;
 	int hops_number = 90;
 	//int hops_number = 1;
 

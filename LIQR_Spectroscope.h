@@ -19,11 +19,13 @@ class LIQR_Spectroscope : public LIQR_Layer
 	float* levels_max_line;
 
 public:
-	LIQR_Spectroscope(uint32_t len);
-
 	float* get_levels_buffer();
 	float* get_filtered_levels_buffer();
 	float* get_max_line_levels_buffer();
+
+	bool active;
+
+	LIQR_Spectroscope(uint32_t len);
 
 	void listen_to(LIQR_Layer* l);
 

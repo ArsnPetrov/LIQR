@@ -25,6 +25,8 @@ protected:
 
 	std::vector<LIQR_Layer*> children;
 
+	bool active;
+
 public:
 	layer_type_id type;
 
@@ -72,6 +74,12 @@ public:
 	cmplx_float_t* get_cmplx_buffer();
 
 	float* get_abs_buffer();
+
+	int is_active();
+
+	void deactivate();
+
+	void activate();
 };
 
 

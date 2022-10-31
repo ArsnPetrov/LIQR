@@ -21,6 +21,7 @@ SpectreDrawer::SpectreDrawer(int x, int y, int w, int h, const char* l) :
 	maxline_buffer = NULL;
 	bandwidth = MHz(2);
 	frequency = MHz(100);
+	active = true;
 }
 
 void SpectreDrawer::change_buffer(float* buf, int len)
@@ -69,7 +70,7 @@ void SpectreDrawer::draw()
 
 	float downsample_factor = (float)buffer_length / window_width;
 
-	if (buffer)
+	if (buffer && active)
 	{
 		// frequencies
 

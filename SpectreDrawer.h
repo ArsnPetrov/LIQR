@@ -16,6 +16,7 @@ class SpectreDrawer : public Fl_Box {
 
 public:
 	bool no_fftshift;
+	bool active;
 
 	SpectreDrawer(int x, int y, int w, int h, const char* l);
 	void link_buffer(float *buffer, int len);

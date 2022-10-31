@@ -11,6 +11,7 @@ public:
 	uint32_t base_frequency;
 	int current_hop;
 	int hops_number;
+	int hopping_period; // [ms]
 
 	/**
 		Receiver's constructor. Opens and RTL-SDR device with given index. Sets the sample

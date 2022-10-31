@@ -47,7 +47,7 @@ void gui_set_autogain(int v)
 
 void gui_set_hops_number(int n)
 {
-	n = 9;
+	if (n <= 0) n = 1;
 	if (gui_current_receiver != nullptr)
 	{
 		//rtlsdr_reset_buffer(gui_device);
@@ -57,9 +57,14 @@ void gui_set_hops_number(int n)
 
 			if (gui_current_spectroscope != nullptr)
 			{
-				gui_current_spectroscope->change_levels_buffer_length(1024 * 8 * n / 2);
+				
+
+				gui_current_spectroscope->change_levels_buffer_length(1024 * 8 * n);
 				gui_current_spectre_drawer->change_buffer(gui_current_spectroscope->get_filtered_levels_buffer(), gui_current_receiver->get_length() * n / 2);
+				gui_current_spectre_drawer->link_maxline(gui_current_spectroscope->get_max_line_levels_buffer());
 				gui_current_spectre_drawer->set_bandwidth(MHz(1 + n));
+
+				
 			}
 			
 		}
@@ -70,3 +75,28 @@ void gui_set_hops_number(int n)
 	}
 }
 
+void gui_start_spectre()
+{
+	printf("fdsS\n");
+	gui_current_spectroscope->activate();
+	gui_current_spectre_drawer->active = true;
+}
+
+void gui_stop_spectre()
+{
+	gui_current_spectroscope->deactivate();
+	gui_current_spectre_drawer->active = false;
+}
+
+void gui_set_hopping_period(int t)
+{
+	if (gui_current_receiver != nullptr)
+	{
+		//rtlsdr_reset_buffer(gui_device);
+		if (gui_current_receiver->type == LAYER_HOPPING_RECEIVER)
+		{
+			((LIQR_Hopping_Receiver*)gui_current_receiver)->hopping_period = t;
+		}
+		printf("%d\n", ((LIQR_Hopping_Receiver*)gui_current_receiver)->hopping_period);
+	}
+}
