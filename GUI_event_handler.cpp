@@ -5,6 +5,7 @@ LIQR_Spectroscope* gui_current_spectroscope = nullptr;;
 LIQR_Receiver* gui_current_receiver = nullptr;
 rtlsdr_dev_t* gui_device = nullptr;
 SpectreDrawer* gui_current_spectre_drawer = nullptr;
+LIQR_Layer* gui_current_layer = nullptr;
 
 void gui_set_device_frequency(uint32_t freq)
 {
@@ -99,4 +100,9 @@ void gui_set_hopping_period(int t)
 		}
 		printf("%d\n", ((LIQR_Hopping_Receiver*)gui_current_receiver)->hopping_period);
 	}
+}
+
+void gui_update_current_layer(LIQR_Layer *l)
+{
+	gui_current_layer = l;
 }

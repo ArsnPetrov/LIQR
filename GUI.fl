@@ -11,12 +11,12 @@ decl {\#include "GUI_event_handler.h"} {public global
 Function {make_window()} {open
 } {
   Fl_Window {} {
-    label {LIQR - Layered I/Q Receiver} open
-    xywh {1061 193 705 695} type Double color 47 labelsize 12 resizable visible
+    label {LIQR - Layered I/Q Receiver} open selected
+    xywh {800 177 930 695} type Double color 47 labelsize 12 resizable visible
   } {
     Fl_Menu_Bar {} {
       label hfgdhf open
-      xywh {0 0 970 20}
+      xywh {0 0 930 20}
     } {
       Submenu {} {
         label {Файл} open
@@ -33,80 +33,81 @@ Function {make_window()} {open
       }
       MenuItem {} {
         label {О программе}
+        callback {(make_about_window())->show();}
         xywh {0 0 30 20} labelsize 12
       }
     }
     Fl_Tabs {} {open
-      xywh {5 535 490 155}
+      xywh {230 535 490 155}
     } {
       Fl_Group {} {
         label {Параметры приёма} open
-        xywh {10 555 485 105} labelsize 13 hide
+        xywh {235 555 485 105} labelsize 13 hide
       } {
         Fl_Value_Output tabs_center_freq_field {
           label {Центральная частота, кГц::}
-          xywh {225 565 260 20} labelsize 12 textsize 12
+          xywh {450 565 260 20} labelsize 12 textsize 12
         }
         Fl_Value_Input {} {
           label {Полоса пропускания, кГц:}
           callback {update_bandwidth_kHz(o->value())}
-          xywh {225 615 260 20} labelsize 12 maximum 2000 value 2000 textsize 12
+          xywh {450 615 260 20} labelsize 12 maximum 2000 value 2000 textsize 12
         }
         Fl_Value_Input tabs_sample_rate_field {
           label {Частота дискретизации, кГц:}
-          xywh {225 590 260 20} labelsize 12 maximum 2000 value 2400 textsize 12
+          xywh {450 590 260 20} labelsize 12 maximum 2000 value 2400 textsize 12
         }
         Fl_Input {} {
           label {Файл для записи:}
-          xywh {225 640 260 20} labelsize 12 textsize 12 deactivate
+          xywh {450 640 260 20} labelsize 12 textsize 12 deactivate
         }
       }
       Fl_Group {} {
         label {Об SDR} open
-        xywh {10 555 485 135} labelsize 12 hide
+        xywh {235 555 485 135} labelsize 12
       } {
         Fl_Output sdr_device_name_field {
           label {Название устройства:}
-          xywh {225 565 260 20} labelsize 12 textsize 12
+          xywh {450 565 260 20} labelsize 12 textsize 12
         }
         Fl_Output tuner_name_field {
           label {Тип тюнера:}
-          xywh {225 590 260 20} labelsize 12 textsize 12
+          xywh {450 590 260 20} labelsize 12 textsize 12
         }
         Fl_Value_Output tuner_gain_field {
           label {Усиление тюнера, дБ:}
-          xywh {225 615 260 20} labelsize 12 textsize 12
+          xywh {450 615 260 20} labelsize 12 textsize 12
         }
         Fl_Check_Button {} {
           label {Автоконтроль усиления}
           callback {gui_set_autogain(o->value());}
-          xywh {225 640 15 15} down_box DOWN_BOX labelsize 12 align 4
+          xywh {450 640 15 15} down_box DOWN_BOX labelsize 12 align 4
         }
       }
       Fl_Group {} {
         label {Сканирующий приём} open
-        xywh {5 555 490 130} labelsize 13
+        xywh {230 555 490 130} labelsize 13 hide
       } {
         Fl_Value_Input freq_hop_step_field {
           label {Шаг перестройки, кГц:}
           callback {update_bandwidth_kHz(o->value())}
-          xywh {225 585 260 20} labelsize 12 maximum 2000 value 1000 textsize 12 deactivate
+          xywh {450 585 260 20} labelsize 12 maximum 2000 value 1000 textsize 12 deactivate
         }
         Fl_Value_Input hop_steps_field {
           label {Шагов перестройки:}
           callback {hop_bandwidth_field->value((o->value() + 1) * 1000);
 gui_set_hops_number(o->value());}
-          xywh {225 610 260 20} labelsize 12 minimum 1 maximum 2000 value 9 textsize 12 deactivate
+          xywh {450 610 260 20} labelsize 12 minimum 1 maximum 2000 value 9 textsize 12 deactivate
         }
         Fl_Value_Input hop_bandwidth_field {
           label {Ширина полосы сканирования, кГц:}
           callback {hop_steps_field->value(o->value() / 1000 - 1)}
-          xywh {225 635 260 20} labelsize 12 minimum 2000 maximum 200000 value 20000 textsize 12 deactivate
+          xywh {450 635 260 20} labelsize 12 minimum 2000 maximum 200000 value 20000 textsize 12 deactivate
         }
         Fl_Value_Input hop_period_field {
           label {Период перестройки, мс:}
           callback {gui_set_hopping_period(o->value());}
-          xywh {225 660 260 20} labelsize 12 minimum 2000 maximum 200000 value 100 textsize 12 deactivate
+          xywh {450 660 260 20} labelsize 12 minimum 2000 maximum 200000 value 100 textsize 12 deactivate
         }
         Fl_Check_Button {} {
           label {Сканировать диапазон}
@@ -114,54 +115,91 @@ gui_set_hops_number(o->value());}
 hop_steps_field->active() ? hop_steps_field->deactivate() : hop_steps_field->activate();
 hop_bandwidth_field->active() ? hop_bandwidth_field->deactivate() : hop_bandwidth_field->activate();
 hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->activate();}
-          xywh {225 565 15 15} down_box DOWN_BOX labelsize 12 align 4
+          xywh {450 565 15 15} down_box DOWN_BOX labelsize 12 align 4
         }
       }
     }
     Fl_Tabs {} {open
-      xywh {5 30 690 440}
+      xywh {230 30 690 440}
     } {
       Fl_Box spectre_box {
         label {СПЕКТР}
-        xywh {5 50 690 420} box BORDER_BOX color 24 labelsize 10 labelcolor 54 resizable hotspot
+        xywh {230 50 690 420} box BORDER_BOX color 24 labelsize 10 labelcolor 54 resizable hotspot
         class SpectreDrawer
       }
     }
-    Fl_Group {} {open selected
-      xywh {5 470 685 65} resizable
+    Fl_Group {} {open
+      xywh {230 470 685 65} resizable
     } {
       Fl_Light_Button {} {
         label {ЗАПИСЬ I/Q (0 MB)}
-        xywh {180 475 110 20} selection_color 89 labelsize 10 deactivate
+        xywh {405 475 110 20} selection_color 89 labelsize 10 deactivate
       }
       Fl_Button {} {
         label {ПУСК}
         callback {gui_start_spectre();}
-        tooltip start xywh {60 475 60 20} labelsize 10
+        tooltip start xywh {285 475 60 20} labelsize 10
       }
       Fl_Button {} {
         label {СТОП}
         callback {gui_stop_spectre();}
-        xywh {120 475 60 20} labelsize 10
+        xywh {345 475 60 20} labelsize 10
       }
       Fl_Light_Button {} {
         label {АУДИО}
-        xywh {5 475 55 20} selection_color 2 labelsize 10 deactivate
+        xywh {230 475 55 20} selection_color 2 labelsize 10 deactivate
       }
       Fl_Value_Input center_freq_field {
         callback {update_center_freq_kHz(o->value());}
-        xywh {180 500 110 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
+        xywh {405 500 110 20} labeltype NO_LABEL labelsize 11 value 100000 textsize 12
       }
       Fl_Counter center_freq_toggle {
         label {Центральная частота, кГц}
         callback {update_center_freq_kHz(o->value());}
-        xywh {5 500 170 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
+        xywh {230 500 170 20} labelsize 12 minimum 0 maximum 1.8e+06 step 0 value 100000 textsize 12
         code0 {o->step(100);}
         code1 {o->lstep(1000);}
       }
       Fl_Group {} {open
-        xywh {295 475 395 45} resizable
+        xywh {520 475 395 45} resizable
       } {}
+    }
+    Fl_Tree layers_tree {
+      xywh {10 30 215 315} labelsize 10
+    }
+    Fl_Button {} {
+      label {+ Создать новый слой}
+      xywh {10 350 215 20} labelsize 11
+    }
+    Fl_Group {} {open
+      xywh {10 375 215 315} box THIN_UP_BOX
+    } {
+      Fl_Text_Display {} {
+        label {Размер входного буфера}
+        xywh {20 550 195 20} labelsize 11 align 5
+      }
+      Fl_Text_Display {} {
+        xywh {20 405 195 95}
+      }
+      Fl_Output layer_name_field {
+        xywh {20 381 195 19} box NO_BOX labelsize 13 textsize 12
+      }
+      Fl_Output layer_input_type_field {
+        label {Тип входного буфера}
+        xywh {20 516 195 19} labelsize 11 align 5 textsize 12
+      }
+      Fl_Output layer_output_type_field {
+        label {Тип выходного буфера}
+        xywh {20 586 195 19} labelsize 11 align 5 textsize 12
+      }
+      Fl_Value_Output layer_output_buffer_size {
+        label {Размер выходного буфера}
+        xywh {20 621 195 19} labelsize 11 align 5 textsize 12
+      }
+      Fl_Value_Output layer_sample_rate {
+        label {Частота дискретизации, кГц}
+        xywh {20 656 195 19} labelsize 11 align 5 textsize 12
+      }
     }
   }
 }
@@ -176,4 +214,16 @@ tabs_center_freq_field->value(freq);} {}
 
 Function {update_bandwidth_kHz(int freq)} {} {
   code {gui_set_bandwidth(freq * 1000);} {}
+}
+
+Function {make_about_window()} {open
+} {
+  Fl_Window {} {open
+    xywh {1044 405 303 227} type Double visible
+  } {
+    Fl_Text_Display {} {
+      label {LIQR - Layered I/Q Receiver}
+      xywh {40 65 225 125} labelsize 11 textsize 11
+    }
+  }
 }

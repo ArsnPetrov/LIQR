@@ -29,8 +29,17 @@ extern SpectreDrawer *spectre_box;
 extern Fl_Value_Input *center_freq_field;
 #include <FL/Fl_Counter.H>
 extern Fl_Counter *center_freq_toggle;
+#include <FL/Fl_Tree.H>
+extern Fl_Tree *layers_tree;
+#include <FL/Fl_Text_Display.H>
+extern Fl_Output *layer_name_field;
+extern Fl_Output *layer_input_type_field;
+extern Fl_Output *layer_output_type_field;
+extern Fl_Value_Output *layer_output_buffer_size;
+extern Fl_Value_Output *layer_sample_rate;
 Fl_Double_Window* make_window();
 extern Fl_Menu_Item menu_hfgdhf[];
 void update_center_freq_kHz(int freq);
 void update_bandwidth_kHz(int freq);
+Fl_Double_Window* make_about_window();
 #endif

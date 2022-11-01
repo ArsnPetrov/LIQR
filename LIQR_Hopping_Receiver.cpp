@@ -29,18 +29,15 @@ LIQR_Hopping_Receiver::LIQR_Hopping_Receiver(uint32_t index, uint32_t sample_rat
 	buffer = new cmplx_float_t[length];
 	abs_value_buffer = new float[length];
 
-	//memset(rtl_buffer, 0, section_length);
+	name = "Hopping Receiver (RTL-SDR)";
+	input_type = "uint8_cmplx";
+	output_type = "float_cmplx";
 	memset(buffer, 0, length);
 	memset(abs_value_buffer, 0, length);
 
 	rtlsdr_set_tuner_gain_mode(d, 1);
 
 	pthread_create(&hopping_thread, NULL, hopping_thread_fn, this);
-
-	//rtlsdr_reset_buffer(d);
-
-	//current_hop++;
-	//current_hop %= hops_number;
 }
 
 void LIQR_Hopping_Receiver::set_center_freq(uint32_t freq)

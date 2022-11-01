@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include <pthread.h>
 #include <fftw3.h>
 #include <cmath>
@@ -17,18 +18,22 @@ protected:
 	LIQR_Layer* parent;
 
 	uint32_t length; // length of the layer in samples
-	uint32_t sample_rate; // serves mainly for informative purposes, except for receiving/playing cases
 
 	pthread_t thread;
 
 	float* abs_value_buffer;
 
-	std::vector<LIQR_Layer*> children;
-
 	bool active;
 
 public:
 	layer_type_id type;
+
+	std::string name;
+	std::string input_type;
+	std::string output_type;
+	uint32_t sample_rate; // serves mainly for informative purposes, except for receiving/playing cases
+
+	std::vector<LIQR_Layer*> children;
 
 	LIQR_Layer();
 	LIQR_Layer(int len);

@@ -25,6 +25,8 @@ LIQR_Spectroscope::LIQR_Spectroscope(uint32_t len)
 
 	in = (cmplx_float_t*)fftwf_in;
 	out = (cmplx_float_t*)fftwf_out;
+
+	name = "Spectroscope";
 }
 
 float* LIQR_Spectroscope::get_filtered_levels_buffer()
@@ -115,7 +117,10 @@ void LIQR_Spectroscope::change_levels_buffer_length(int l)
 	levels_filtered = new float[l];
 	levels_max_line = new float[l];
 
-	memset(levels, -150, l * sizeof(float));
-	memset(levels_filtered, -150, l * sizeof(float));
-	memset(levels_max_line, -150, l * sizeof(float));
+	for (int i = 0; i < l; i++)
+	{
+		levels[i] = -150;
+		levels_filtered[i] = -150;
+		levels_max_line[i] = -150;
+	}
 }
