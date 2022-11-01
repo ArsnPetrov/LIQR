@@ -11,6 +11,7 @@
 void add_level_to_tree(LIQR_Layer *l, std::string str)
 {
 	layers_tree->add((str + l->name).c_str());
+	(layers_tree->find_item((str + l->name).c_str()))->user_data(l);
 
 	for (int i = 0; i < l->children.size(); i++)
 	{
@@ -20,11 +21,28 @@ void add_level_to_tree(LIQR_Layer *l, std::string str)
 
 void update_layer_panel()
 {
+	if (gui_current_layer == nullptr) return;
+
+	layer_name_field->redraw_label();
 	layer_name_field->value(gui_current_layer->name.c_str());
 	layer_input_type_field->value(gui_current_layer->input_type.c_str());
 	layer_output_type_field->value(gui_current_layer->output_type.c_str());
 	layer_output_buffer_size->value(gui_current_layer->get_length());
 	layer_sample_rate->value(gui_current_layer->sample_rate / 1000);
+	if (gui_current_layer->parent != nullptr) layer_input_buffer_size->value(gui_current_layer->parent->get_length());
+}
+
+void tree_callback(Fl_Widget* w, void* data)
+{
+	Fl_Tree_Item* selected_item;
+	selected_item = layers_tree->first_selected_item();
+	if (selected_item == 0)
+	{
+		return;
+	}
+	gui_current_layer = (LIQR_Layer*)selected_item->user_data();
+	printf("Layer name: %s\n", gui_current_layer->name.c_str());
+	update_layer_panel();
 }
 
 int main()
@@ -67,6 +85,7 @@ int main()
 	spectre_box->set_frequecny(MHz(100));
 	spectre_box->damage(FL_DAMAGE_ALL);
 
+	layers_tree->callback(tree_callback);
 	layers_tree->clear();
 	layers_tree->showroot(0);
 	layers_tree->item_labelsize(11);

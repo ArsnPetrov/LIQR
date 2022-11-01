@@ -15,8 +15,6 @@ class LIQR_Layer
 protected:
 	cmplx_float_t* buffer;
 
-	LIQR_Layer* parent;
-
 	uint32_t length; // length of the layer in samples
 
 	pthread_t thread;
@@ -27,6 +25,8 @@ protected:
 
 public:
 	layer_type_id type;
+
+	LIQR_Layer* parent;
 
 	std::string name;
 	std::string input_type;

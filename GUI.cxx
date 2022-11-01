@@ -101,6 +101,8 @@ Fl_Value_Output *layer_output_buffer_size=(Fl_Value_Output *)0;
 
 Fl_Value_Output *layer_sample_rate=(Fl_Value_Output *)0;
 
+Fl_Value_Output *layer_input_buffer_size=(Fl_Value_Output *)0;
+
 Fl_Double_Window* make_window() {
   Fl_Double_Window* w;
   { Fl_Double_Window* o = new Fl_Double_Window(930, 695, "LIQR - Layered I/Q Receiver");
@@ -244,7 +246,7 @@ Fl_Double_Window* make_window() {
       } // SpectreDrawer* spectre_box
       o->end();
     } // Fl_Tabs* o
-    { Fl_Group* o = new Fl_Group(230, 470, 685, 65);
+    { Fl_Group* o = new Fl_Group(230, 470, 690, 65);
       { Fl_Light_Button* o = new Fl_Light_Button(405, 475, 110, 20, "\320\227\320\220\320\237\320\230\320\241\320\254 I/Q (0 MB)");
         o->selection_color((Fl_Color)89);
         o->labelsize(10);
@@ -284,7 +286,7 @@ Fl_Double_Window* make_window() {
         o->step(100);
         o->lstep(1000);
       } // Fl_Counter* center_freq_toggle
-      { Fl_Group* o = new Fl_Group(520, 475, 395, 45);
+      { Fl_Group* o = new Fl_Group(520, 475, 400, 45);
         o->end();
         Fl_Group::current()->resizable(o);
       } // Fl_Group* o
@@ -300,45 +302,45 @@ Fl_Double_Window* make_window() {
     } // Fl_Button* o
     { Fl_Group* o = new Fl_Group(10, 375, 215, 315);
       o->box(FL_THIN_UP_BOX);
-      { Fl_Text_Display* o = new Fl_Text_Display(20, 550, 195, 20, "\320\240\320\260\320\267\320\274\320\265\321\200 \320\262\321\205\320\276\
-\320\264\320\275\320\276\320\263\320\276 \320\261\321\203\321\204\320\265\321\
-\200\320\260");
-        o->labelsize(11);
-        o->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-      } // Fl_Text_Display* o
-      { new Fl_Text_Display(20, 405, 195, 95);
+      { new Fl_Text_Display(20, 400, 195, 105);
       } // Fl_Text_Display* o
       { layer_name_field = new Fl_Output(20, 381, 195, 19);
         layer_name_field->box(FL_NO_BOX);
-        layer_name_field->labelsize(13);
         layer_name_field->textsize(12);
       } // Fl_Output* layer_name_field
-      { layer_input_type_field = new Fl_Output(20, 516, 195, 19, "\320\242\320\270\320\277 \320\262\321\205\320\276\320\264\320\275\320\276\
+      { layer_input_type_field = new Fl_Output(20, 555, 195, 20, "\320\242\320\270\320\277 \320\262\321\205\320\276\320\264\320\275\320\276\
 \320\263\320\276 \320\261\321\203\321\204\320\265\321\200\320\260");
         layer_input_type_field->labelsize(11);
         layer_input_type_field->textsize(12);
         layer_input_type_field->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       } // Fl_Output* layer_input_type_field
-      { layer_output_type_field = new Fl_Output(20, 586, 195, 19, "\320\242\320\270\320\277 \320\262\321\213\321\205\320\276\320\264\320\275\
+      { layer_output_type_field = new Fl_Output(20, 590, 195, 20, "\320\242\320\270\320\277 \320\262\321\213\321\205\320\276\320\264\320\275\
 \320\276\320\263\320\276 \320\261\321\203\321\204\320\265\321\200\320\260");
         layer_output_type_field->labelsize(11);
         layer_output_type_field->textsize(12);
         layer_output_type_field->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       } // Fl_Output* layer_output_type_field
-      { layer_output_buffer_size = new Fl_Value_Output(20, 621, 195, 19, "\320\240\320\260\320\267\320\274\320\265\321\200 \320\262\321\213\321\205\
+      { layer_output_buffer_size = new Fl_Value_Output(20, 625, 195, 20, "\320\240\320\260\320\267\320\274\320\265\321\200 \320\262\321\213\321\205\
 \320\276\320\264\320\275\320\276\320\263\320\276 \320\261\321\203\321\204\320\
 \265\321\200\320\260");
         layer_output_buffer_size->labelsize(11);
         layer_output_buffer_size->textsize(12);
         layer_output_buffer_size->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       } // Fl_Value_Output* layer_output_buffer_size
-      { layer_sample_rate = new Fl_Value_Output(20, 656, 195, 19, "\320\247\320\260\321\201\321\202\320\276\321\202\320\260 \320\264\320\270\
+      { layer_sample_rate = new Fl_Value_Output(20, 660, 195, 20, "\320\247\320\260\321\201\321\202\320\276\321\202\320\260 \320\264\320\270\
 \321\201\320\272\321\200\320\265\321\202\320\270\320\267\320\260\321\206\320\
 \270\320\270, \320\272\320\223\321\206");
         layer_sample_rate->labelsize(11);
         layer_sample_rate->textsize(12);
         layer_sample_rate->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       } // Fl_Value_Output* layer_sample_rate
+      { layer_input_buffer_size = new Fl_Value_Output(20, 520, 195, 20, "\320\240\320\260\320\267\320\274\320\265\321\200 \320\262\321\205\320\276\
+\320\264\320\275\320\276\320\263\320\276 \320\261\321\203\321\204\320\265\321\
+\200\320\260");
+        layer_input_buffer_size->labelsize(11);
+        layer_input_buffer_size->textsize(12);
+        layer_input_buffer_size->align(Fl_Align(FL_ALIGN_TOP_LEFT));
+      } // Fl_Value_Output* layer_input_buffer_size
       o->end();
     } // Fl_Group* o
     o->end();

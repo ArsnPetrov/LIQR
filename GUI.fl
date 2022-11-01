@@ -129,7 +129,7 @@ hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->
       }
     }
     Fl_Group {} {open
-      xywh {230 470 685 65} resizable
+      xywh {230 470 690 65} resizable
     } {
       Fl_Light_Button {} {
         label {ЗАПИСЬ I/Q (0 MB)}
@@ -161,7 +161,7 @@ hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->
         code1 {o->lstep(1000);}
       }
       Fl_Group {} {open
-        xywh {520 475 395 45} resizable
+        xywh {520 475 400 45} resizable
       } {}
     }
     Fl_Tree layers_tree {
@@ -175,30 +175,30 @@ hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->
       xywh {10 375 215 315} box THIN_UP_BOX
     } {
       Fl_Text_Display {} {
-        label {Размер входного буфера}
-        xywh {20 550 195 20} labelsize 11 align 5
-      }
-      Fl_Text_Display {} {
-        xywh {20 405 195 95}
+        xywh {20 400 195 105}
       }
       Fl_Output layer_name_field {
-        xywh {20 381 195 19} box NO_BOX labelsize 13 textsize 12
+        xywh {20 381 195 19} box NO_BOX textsize 12
       }
       Fl_Output layer_input_type_field {
         label {Тип входного буфера}
-        xywh {20 516 195 19} labelsize 11 align 5 textsize 12
+        xywh {20 555 195 20} labelsize 11 align 5 textsize 12
       }
       Fl_Output layer_output_type_field {
         label {Тип выходного буфера}
-        xywh {20 586 195 19} labelsize 11 align 5 textsize 12
+        xywh {20 590 195 20} labelsize 11 align 5 textsize 12
       }
       Fl_Value_Output layer_output_buffer_size {
         label {Размер выходного буфера}
-        xywh {20 621 195 19} labelsize 11 align 5 textsize 12
+        xywh {20 625 195 20} labelsize 11 align 5 textsize 12
       }
       Fl_Value_Output layer_sample_rate {
         label {Частота дискретизации, кГц}
-        xywh {20 656 195 19} labelsize 11 align 5 textsize 12
+        xywh {20 660 195 20} labelsize 11 align 5 textsize 12
+      }
+      Fl_Value_Output layer_input_buffer_size {
+        label {Размер входного буфера}
+        xywh {20 520 195 20} labelsize 11 align 5 textsize 12
       }
     }
   }

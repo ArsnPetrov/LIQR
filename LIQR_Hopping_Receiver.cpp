@@ -10,8 +10,8 @@ void* hopping_thread_fn(void* arg)
 		rec->current_hop++;
 		rec->current_hop %= rec->hops_number;
 		rtlsdr_set_center_freq(rec->d, rec->base_frequency - (rec->hops_number - 1) * MHz(1) / 2 + rec->current_hop * MHz(1));
-		printf("Current center frequency is %d\n", rtlsdr_get_center_freq(rec->d));
-		printf("Current hops is %d\n", rec->current_hop);
+		//printf("Current center frequency is %d\n", rtlsdr_get_center_freq(rec->d));
+		//printf("Current hops is %d\n", rec->current_hop);
 	}
 	return 0;
 }
