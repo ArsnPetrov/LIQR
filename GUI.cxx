@@ -91,6 +91,10 @@ static void cb_center_freq_toggle(Fl_Counter* o, void*) {
 
 Fl_Tree *layers_tree=(Fl_Tree *)0;
 
+static void cb_6(Fl_Button*, void*) {
+  (make_layer_creation_window())->show();
+}
+
 Fl_Output *layer_name_field=(Fl_Output *)0;
 
 Fl_Output *layer_input_type_field=(Fl_Output *)0;
@@ -150,6 +154,7 @@ Fl_Double_Window* make_window() {
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(235, 555, 485, 135, "\320\236\320\261 SDR");
         o->labelsize(12);
+        o->hide();
         { sdr_device_name_field = new Fl_Output(450, 565, 260, 20, "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \321\203\
 \321\201\321\202\321\200\320\276\320\271\321\201\321\202\320\262\320\260:");
           sdr_device_name_field->labelsize(12);
@@ -177,7 +182,6 @@ Fl_Double_Window* make_window() {
       { Fl_Group* o = new Fl_Group(230, 555, 490, 130, "\320\241\320\272\320\260\320\275\320\270\321\200\321\203\321\216\321\211\320\
 \270\320\271 \320\277\321\200\320\270\321\221\320\274");
         o->labelsize(13);
-        o->hide();
         { freq_hop_step_field = new Fl_Value_Input(450, 585, 260, 20, "\320\250\320\260\320\263 \320\277\320\265\321\200\320\265\321\201\321\202\
 \321\200\320\276\320\271\320\272\320\270, \320\272\320\223\321\206:");
           freq_hop_step_field->labelsize(12);
@@ -203,7 +207,7 @@ Fl_Double_Window* make_window() {
           hop_bandwidth_field->labelsize(12);
           hop_bandwidth_field->minimum(2000);
           hop_bandwidth_field->maximum(200000);
-          hop_bandwidth_field->value(20000);
+          hop_bandwidth_field->value(10000);
           hop_bandwidth_field->textsize(12);
           hop_bandwidth_field->callback((Fl_Callback*)cb_hop_bandwidth_field);
           hop_bandwidth_field->deactivate();
@@ -299,6 +303,7 @@ Fl_Double_Window* make_window() {
     { Fl_Button* o = new Fl_Button(10, 350, 215, 20, "+ \320\241\320\276\320\267\320\264\320\260\321\202\321\214 \320\275\320\276\
 \320\262\321\213\320\271 \321\201\320\273\320\276\320\271");
       o->labelsize(11);
+      o->callback((Fl_Callback*)cb_6);
     } // Fl_Button* o
     { Fl_Group* o = new Fl_Group(10, 375, 215, 315);
       o->box(FL_THIN_UP_BOX);
@@ -367,6 +372,46 @@ Fl_Double_Window* make_about_window() {
       o->labelsize(11);
       o->textsize(11);
     } // Fl_Text_Display* o
+    o->end();
+  } // Fl_Double_Window* o
+  return w;
+}
+
+Fl_Input_Choice *new_layer_type_choice=(Fl_Input_Choice *)0;
+
+Fl_Choice *new_layer_parent_choice=(Fl_Choice *)0;
+
+static void cb_7(Fl_Button*, void*) {
+  gui_add_layer(new_layer_type_choice->value());
+}
+
+Fl_Double_Window* make_layer_creation_window() {
+  Fl_Double_Window* w;
+  { Fl_Double_Window* o = new Fl_Double_Window(399, 120, "\320\241\320\276\320\267\320\264\320\260\321\202\321\214 \320\275\320\276\
+\320\262\321\213\320\271 \321\201\320\273\320\276\320\271");
+    w = o; if (w) {/* empty */}
+    o->hotspot(o);
+    { Fl_Input_Choice* o = new_layer_type_choice = new Fl_Input_Choice(10, 23, 380, 20, "\320\242\320\270\320\277 \321\201\320\273\320\276\321\217");
+      new_layer_type_choice->labelsize(11);
+      new_layer_type_choice->textsize(12);
+      new_layer_type_choice->align(Fl_Align(FL_ALIGN_TOP_LEFT));
+      o->add("Receiver");
+      o->add("Hopping Receiver");
+      o->add("Spectroscope");
+      o->add("Mixer");
+    } // Fl_Input_Choice* new_layer_type_choice
+    { new_layer_parent_choice = new Fl_Choice(10, 60, 215, 20, "\320\235\320\260\321\201\320\273\320\265\320\264\320\276\320\262\320\260\321\
+\202\321\214 \320\276\321\202");
+      new_layer_parent_choice->down_box(FL_BORDER_BOX);
+      new_layer_parent_choice->labelsize(11);
+      new_layer_parent_choice->textsize(11);
+      new_layer_parent_choice->align(Fl_Align(FL_ALIGN_TOP_LEFT));
+    } // Fl_Choice* new_layer_parent_choice
+    { Fl_Button* o = new Fl_Button(10, 90, 379, 20, "\320\241\320\276\320\267\320\264\320\260\321\202\321\214 \321\201\320\273\
+\320\276\320\271");
+      o->labelsize(12);
+      o->callback((Fl_Callback*)cb_7);
+    } // Fl_Button* o
     o->end();
   } // Fl_Double_Window* o
   return w;

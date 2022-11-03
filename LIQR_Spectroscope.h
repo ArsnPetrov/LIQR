@@ -31,6 +31,8 @@ public:
 
 	void update();
 
+	void zero_maxline();
+
 	void change_levels_buffer_length(int l);
 };
 

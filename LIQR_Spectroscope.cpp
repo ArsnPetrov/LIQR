@@ -95,7 +95,13 @@ void LIQR_Spectroscope::update()
 		}
 		//printf("%f\n", levels_filtered[bias + (length / 2 + i) % length]);
 		int _j = (length / 2 + i) % length;
-		levels[bias + i] = 0.9 * levels[bias + i] + 1 * log10f((out[_j].real * out[_j].real + out[_j].imag * out[_j].imag) / ((float)length * length / (hops * hops) * 256 * 256));
+		levels[bias + i] = 10 * log10f((out[_j].real * out[_j].real + out[_j].imag * out[_j].imag) / ((float)length * length / (hops * hops) * 256 * 256));
+
+		if (isinf(levels[bias + i]))
+		{
+			levels[bias + i] = -100;
+		}
+
 		levels_filtered[bias + i] = 0.98 * levels_filtered[bias + i] + 0.02 * levels[bias + i];
 		//levels_filtered[bias + i] = -100;
 		if (levels_filtered[bias + i] != 0 && levels_filtered[bias + i] > levels_max_line[bias + i]) levels_max_line[bias + i] = levels_filtered[bias + i];
@@ -104,6 +110,19 @@ void LIQR_Spectroscope::update()
 		{
 			levels_filtered[bias + i] = -100;
 		}
+	}
+}
+
+void LIQR_Spectroscope::zero_maxline()
+{
+	int n = length;
+	if (parent->type == LAYER_HOPPING_RECEIVER)
+	{
+		n *= ((LIQR_Hopping_Receiver*)parent)->hops_number;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		levels_max_line[i] = -150;
 	}
 }
 

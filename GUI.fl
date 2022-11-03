@@ -64,7 +64,7 @@ Function {make_window()} {open
       }
       Fl_Group {} {
         label {Об SDR} open
-        xywh {235 555 485 135} labelsize 12
+        xywh {235 555 485 135} labelsize 12 hide
       } {
         Fl_Output sdr_device_name_field {
           label {Название устройства:}
@@ -86,7 +86,7 @@ Function {make_window()} {open
       }
       Fl_Group {} {
         label {Сканирующий приём} open
-        xywh {230 555 490 130} labelsize 13 hide
+        xywh {230 555 490 130} labelsize 13
       } {
         Fl_Value_Input freq_hop_step_field {
           label {Шаг перестройки, кГц:}
@@ -102,7 +102,7 @@ gui_set_hops_number(o->value());}
         Fl_Value_Input hop_bandwidth_field {
           label {Ширина полосы сканирования, кГц:}
           callback {hop_steps_field->value(o->value() / 1000 - 1)}
-          xywh {450 635 260 20} labelsize 12 minimum 2000 maximum 200000 value 20000 textsize 12 deactivate
+          xywh {450 635 260 20} labelsize 12 minimum 2000 maximum 200000 value 10000 textsize 12 deactivate
         }
         Fl_Value_Input hop_period_field {
           label {Период перестройки, мс:}
@@ -169,6 +169,7 @@ hop_period_field->active() ? hop_period_field->deactivate() : hop_period_field->
     }
     Fl_Button {} {
       label {+ Создать новый слой}
+      callback {(make_layer_creation_window())->show();}
       xywh {10 350 215 20} labelsize 11
     }
     Fl_Group {} {open
@@ -216,14 +217,39 @@ Function {update_bandwidth_kHz(int freq)} {} {
   code {gui_set_bandwidth(freq * 1000);} {}
 }
 
-Function {make_about_window()} {open
-} {
+Function {make_about_window()} {} {
   Fl_Window {} {open
     xywh {1044 405 303 227} type Double visible
   } {
     Fl_Text_Display {} {
       label {LIQR - Layered I/Q Receiver}
       xywh {40 65 225 125} labelsize 11 textsize 11
+    }
+  }
+}
+
+Function {make_layer_creation_window()} {open
+} {
+  Fl_Window {} {
+    label {Создать новый слой} open
+    xywh {1041 439 399 120} type Double hotspot visible
+  } {
+    Fl_Input_Choice new_layer_type_choice {
+      label {Тип слоя} open
+      xywh {10 23 380 20} labelsize 11 align 5 textsize 12
+      code0 {o->add("Receiver");}
+      code1 {o->add("Hopping Receiver");}
+      code2 {o->add("Spectroscope");}
+      code3 {o->add("Mixer");}
+    } {}
+    Fl_Choice new_layer_parent_choice {
+      label {Наследовать от} open
+      xywh {10 60 215 20} down_box BORDER_BOX labelsize 11 align 5 textsize 11
+    } {}
+    Fl_Button {} {
+      label {Создать слой}
+      callback {gui_add_layer(new_layer_type_choice->value())}
+      xywh {10 90 379 20} labelsize 12
     }
   }
 }

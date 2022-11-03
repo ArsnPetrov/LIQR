@@ -25,6 +25,8 @@ LIQR_Receiver::LIQR_Receiver(uint32_t index, uint32_t sample_rate, uint32_t len)
 	//rtlsdr_set_testmode(d, 1);
 	rtlsdr_reset_buffer(d);
 
+	name = "RTL-SDR Receiver";
+
 	rtl_buffer = new cmplx_uint8_t[length];
 	buffer = new cmplx_float_t[length];
 	abs_value_buffer = new float[length];
@@ -39,6 +41,8 @@ LIQR_Receiver::LIQR_Receiver()
 	rtl_buffer = nullptr;
 	buffer = nullptr;
 	abs_value_buffer = nullptr;
+
+	name = "RTL-SDR Receiver";
 
 	int r;
 	r = rtlsdr_open(&d, 0);

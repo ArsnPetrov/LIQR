@@ -43,4 +43,9 @@ extern Fl_Menu_Item menu_hfgdhf[];
 void update_center_freq_kHz(int freq);
 void update_bandwidth_kHz(int freq);
 Fl_Double_Window* make_about_window();
+#include <FL/Fl_Input_Choice.H>
+extern Fl_Input_Choice *new_layer_type_choice;
+#include <FL/Fl_Choice.H>
+extern Fl_Choice *new_layer_parent_choice;
+Fl_Double_Window* make_layer_creation_window();
 #endif

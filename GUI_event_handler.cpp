@@ -6,6 +6,15 @@ LIQR_Receiver* gui_current_receiver = nullptr;
 rtlsdr_dev_t* gui_device = nullptr;
 SpectreDrawer* gui_current_spectre_drawer = nullptr;
 LIQR_Layer* gui_current_layer = nullptr;
+std::vector<LIQR_Layer*>* gui_layer_list = nullptr;
+
+void gui_zero_maxline(void *)
+{
+	if (gui_current_spectroscope != nullptr)
+	{
+		gui_current_spectroscope->zero_maxline();
+	}
+}
 
 void gui_set_device_frequency(uint32_t freq)
 {
@@ -20,6 +29,7 @@ void gui_set_device_frequency(uint32_t freq)
 		{
 			gui_current_receiver->set_center_freq(freq);
 		}
+		Fl::add_timeout(0.3, gui_zero_maxline);
 	}
 	if (gui_current_spectre_drawer != nullptr)
 	{
@@ -60,7 +70,7 @@ void gui_set_hops_number(int n)
 			{
 				
 
-				gui_current_spectroscope->change_levels_buffer_length(1024 * 8 * n);
+				gui_current_spectroscope->change_levels_buffer_length(6400 * n);
 				gui_current_spectre_drawer->change_buffer(gui_current_spectroscope->get_filtered_levels_buffer(), gui_current_receiver->get_length() * n / 2);
 				gui_current_spectre_drawer->link_maxline(gui_current_spectroscope->get_max_line_levels_buffer());
 				gui_current_spectre_drawer->set_bandwidth(MHz(1 + n));
@@ -105,4 +115,12 @@ void gui_set_hopping_period(int t)
 void gui_update_current_layer(LIQR_Layer *l)
 {
 	gui_current_layer = l;
+}
+
+void gui_add_layer(const char* option)
+{
+	if (!strcmp(option, "Receiver"))
+	{
+		printf("Receiver\n");
+	}
 }

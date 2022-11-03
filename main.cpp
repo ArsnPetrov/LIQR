@@ -32,6 +32,18 @@ void update_layer_panel()
 	if (gui_current_layer->parent != nullptr) layer_input_buffer_size->value(gui_current_layer->parent->get_length());
 }
 
+void update_new_layer_layers_list()
+{
+	if (new_layer_parent_choice != nullptr)
+	{
+		for (int i = 0; i < gui_layer_list->size(); i++)
+		{
+			new_layer_parent_choice->clear();
+			new_layer_parent_choice->add(gui_layer_list->at(i)->name.c_str());
+		}
+	}
+}
+
 void tree_callback(Fl_Widget* w, void* data)
 {
 	Fl_Tree_Item* selected_item;
@@ -47,29 +59,33 @@ void tree_callback(Fl_Widget* w, void* data)
 
 int main()
 {
-	Fl_Double_Window* window;
-	char device_name[32] = { 0 };
-	int buffer_length;
+	// receiver parameters
 
-	window = make_window();
-	window->show();
-
-	buffer_length = 1024;
-	int hops_number = 90;
+	int buffer_length = 6400;
+	int hops_number = 1;
 
 	// LIQR setup
-
-	//LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
-	LIQR_Hopping_Receiver* receiver = new LIQR_Hopping_Receiver(0, kHz(1024), buffer_length, MHz(100), hops_number);
 	
-	receiver->listen();
+	std::vector<LIQR_Layer*> layers;
+	gui_layer_list = &layers;
 
-	sdr_device_name_field->value(rtlsdr_get_device_name(0));
+	LIQR_Receiver* receiver = new LIQR_Receiver(0, kHz(2048), buffer_length);
+	receiver->listen();
 
 	LIQR_Spectroscope* spectroscope = new LIQR_Spectroscope(buffer_length);
 	spectroscope->listen_to(receiver);
 
+	//LIQR_Hopping_Receiver *hopping_receiver = new LIQR_Hopping_Receiver(0, kHz(2048), buffer_length, MHz(100), hops_number);
+	//hopping_receiver->listen();
+
+
+
 	// GUI
+
+	Fl_Double_Window* window;
+
+	window = make_window();
+	window->show();
 
 	gui_device = receiver->d;
 	gui_current_spectre_drawer = spectre_box;
@@ -77,9 +93,11 @@ int main()
 	gui_current_spectroscope = spectroscope;
 	gui_current_layer = receiver;
 
+	sdr_device_name_field->value(rtlsdr_get_device_name(0));
+
 	update_layer_panel();
 
-	spectre_box->link_buffer(spectroscope->get_filtered_levels_buffer(), buffer_length * (hops_number + 1) / 2);
+	spectre_box->link_buffer(spectroscope->get_filtered_levels_buffer(), buffer_length / 2 * (hops_number + 1));
 	spectre_box->link_maxline(spectroscope->get_max_line_levels_buffer());
 	spectre_box->set_bandwidth(MHz(1 + hops_number));
 	spectre_box->set_frequecny(MHz(100));
@@ -88,7 +106,7 @@ int main()
 	layers_tree->callback(tree_callback);
 	layers_tree->clear();
 	layers_tree->showroot(0);
-	layers_tree->item_labelsize(11);
+	layers_tree->item_labelsize(12);
 	
 	add_level_to_tree(receiver, "");
 
